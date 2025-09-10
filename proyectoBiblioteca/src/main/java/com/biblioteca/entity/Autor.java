@@ -1,11 +1,13 @@
 package com.biblioteca.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
@@ -30,6 +32,9 @@ public class Autor {
 	private String apellido;
 	private String nacionalidad;
 	private LocalDate fechaNacimiento;
+	
+	@OneToMany(mappedBy = "autor")
+	private List<Libro> libroList;
 	
 	// Constructores 
 	public Autor() {
