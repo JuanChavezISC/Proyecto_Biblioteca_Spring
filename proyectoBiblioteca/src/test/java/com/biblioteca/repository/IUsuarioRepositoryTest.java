@@ -16,21 +16,25 @@ class IUsuarioRepositoryTest {
 	
 	@Test
 	public void guardarUsuario() {
-		Usuario usuario = new Usuario("Jhon", "Doe", "juanCh@example.com");
+		Usuario usuario = new Usuario(
+					"Ursula", 
+					"Jimenez", 
+					"ursuJim@example.com"
+					);
 		usuarioRepository.save(usuario);
 	}
 
 
 	@Test
 	public void findUsuarioByNombre() {
-		Usuario usuario = usuarioRepository.findByNombre("Juan").get();
+		Usuario usuario = usuarioRepository.findByNombre("Ursula").get();
 		System.out.println("usuario = " + usuario);
 	}
 
 	@Test
 	public void findAllUsers() {
 		List<Usuario> usuarioList = usuarioRepository.findAll();
-		System.out.println("usuarioList =" + usuarioList);
+		usuarioList.forEach(System.out::println);
 	}
 	
 }
