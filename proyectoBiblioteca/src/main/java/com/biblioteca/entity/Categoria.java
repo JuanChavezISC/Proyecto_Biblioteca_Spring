@@ -31,19 +31,19 @@ public class Categoria {
 	private Long categoriaId;
 	private String descripcion;
 	
-	
+	// Constructores
 	public Categoria() {
 		super();
 	}
 
 
-	public Categoria(Long categoriaId, String descripcion) {
+	public Categoria(String descripcion) {
 		super();
-		this.categoriaId = categoriaId;
 		this.descripcion = descripcion;
 	}
 
 
+	// Getters
 	public Long getCategoriaId() {
 		return categoriaId;
 	}
@@ -61,6 +61,12 @@ public class Categoria {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Categoria [categoriaId=" + categoriaId + ", descripcion=" + descripcion + "]";
 	}
 	
 	

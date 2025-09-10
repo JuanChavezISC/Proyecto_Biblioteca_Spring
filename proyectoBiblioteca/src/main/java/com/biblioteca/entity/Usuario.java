@@ -40,6 +40,7 @@ public class Usuario {
 	private String email;
 	
 	
+	// Constructores
 	public Usuario() {
 		super();
 	}
@@ -47,13 +48,13 @@ public class Usuario {
 
 	public Usuario(String nombre, String apellido, String email) {
 		super();
-		this.usuarioId = usuarioId;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.email = email;
 	}
 
 
+	// Getters & Setters
 	public Long getUsuarioId() {
 		return usuarioId;
 	}
