@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.biblioteca.dto.UsuarioDto;
 import com.biblioteca.entity.Usuario;
 import com.biblioteca.service.IUsuarioService;
 
@@ -27,12 +28,12 @@ public class UsuarioController {
 	}
 	
 	@PostMapping("/saveUser")
-	public Usuario saveUser(@RequestBody Usuario usuario) {
+	public Usuario saveUser(@RequestBody UsuarioDto usuario) {
 		return usuarioService.saveUser(usuario);
 	}
 	
 	@PutMapping("/updateUser/{id}") //PathVariable recibe variable en URL
-	public Usuario updateUser(@PathVariable Long id, @RequestBody Usuario usuario) {
+	public Usuario updateUser(@PathVariable Long id, @RequestBody UsuarioDto usuario) {
 		return usuarioService.updateUser(id, usuario);
 	}
 	

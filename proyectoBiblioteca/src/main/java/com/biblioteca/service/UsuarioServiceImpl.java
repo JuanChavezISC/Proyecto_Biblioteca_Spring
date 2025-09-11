@@ -6,6 +6,7 @@ import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.biblioteca.dto.UsuarioDto;
 import com.biblioteca.entity.Usuario;
 import com.biblioteca.repository.IUsuarioRepository;
 
@@ -23,13 +24,17 @@ public class UsuarioServiceImpl implements IUsuarioService{
 
 	// Guardar todos los usuarios
 	@Override
-	public Usuario saveUser(Usuario usuario) {
-		return usuarioRepository.save(usuario);
+	public Usuario saveUser(UsuarioDto usuario) {
+		Usuario usuarioEntity = new Usuario();
+		usuarioEntity.setNombre(usuario.getNombre());
+		usuarioEntity.setApellido(usuario.getApellido());
+		usuarioEntity.setEmail(usuario.getEmail());
+		return usuarioRepository.save(usuarioEntity);
 	}
 
 	// Actualizar Usuario
 	@Override
-	public Usuario updateUser(Long id, Usuario usuario) {
+	public Usuario updateUser(Long id, UsuarioDto usuario) {
 		
 		Usuario usuarioDb = usuarioRepository.findById(id).get();
 		if (Objects.nonNull(usuario.getNombre()) && !"".equalsIgnoreCase(usuario.getNombre())) {
