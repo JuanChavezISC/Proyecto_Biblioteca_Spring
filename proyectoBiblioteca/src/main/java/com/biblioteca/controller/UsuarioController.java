@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.biblioteca.dto.UsuarioDto;
@@ -16,6 +17,7 @@ import com.biblioteca.entity.Usuario;
 import com.biblioteca.service.IUsuarioService;
 
 @RestController
+@RequestMapping("/api")
 public class UsuarioController {
 
 	@Autowired
@@ -40,6 +42,6 @@ public class UsuarioController {
 	@DeleteMapping("/deleteUser/{id}")
 	public String deleteUser(@PathVariable Long id) {
 		usuarioService.deleteUser(id);
-		return "Succesfully delete";
+		return "Usuario deleted successfully ";
 	}
 }
