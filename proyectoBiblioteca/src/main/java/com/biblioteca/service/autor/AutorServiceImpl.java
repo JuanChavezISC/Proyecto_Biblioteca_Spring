@@ -36,7 +36,8 @@ public class AutorServiceImpl implements IAutorService{
 
 	@Override
 	public Autor updateAutor(Long id, AutorDto autor) {
-		Autor autorDb = autorRepository.findById(id).get();
+		Autor autorDb = autorRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("autor no encontrado con id " + id ));
 		
 		if (Objects.nonNull(autor.getNombre()) && !"".equalsIgnoreCase(autor.getNombre())) {
 			autorDb.setNombre(autor.getNombre());
