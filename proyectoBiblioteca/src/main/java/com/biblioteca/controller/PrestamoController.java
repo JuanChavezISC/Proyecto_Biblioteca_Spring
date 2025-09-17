@@ -43,6 +43,6 @@ public class PrestamoController {
 	@DeleteMapping("/deleteLoan/{id}")
 	public String deleteLoan(@PathVariable Long id) {
 		prestamoService.deleteLoan(id);
-		return "Prestamo deleted succesfully";
+		return "Loan deleted succesfully";
 	}
 }
