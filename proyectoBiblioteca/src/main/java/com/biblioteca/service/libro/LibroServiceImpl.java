@@ -35,7 +35,7 @@ public class LibroServiceImpl implements ILibroService {
 	public Libro saveBook(LibroDto libro) {
 		
 		Autor autorExistente = autorRepository.findById(libro.getAutorId())
-				.orElseThrow(() -> new RuntimeException("autor no encontrado"));
+				.orElseThrow(() -> new RuntimeException("autor no encontrado, ingrese un id diferente"));
 		
 		Categoria categoriaExistente = categoriaRepository.findById(libro.getCategoriaId())
 				.orElseThrow(() -> new RuntimeException("categoria no encontrada"));
