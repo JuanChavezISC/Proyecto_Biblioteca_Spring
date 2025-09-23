@@ -3,6 +3,7 @@ package com.biblioteca.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,10 +19,16 @@ import com.biblioteca.service.autor.IAutorService;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins= {"http://localhost:4200"})
 public class AutorController {
 
 	@Autowired
 	IAutorService autorService;
+	
+	@GetMapping("/findAutorById/{id}")
+	public Autor getAutorById(@PathVariable Long id) {
+		return autorService.getAutorById(id);
+	}
 	
 	@GetMapping("/findAllAutors")
 	public List<Autor> findAllAutors() {
@@ -39,8 +46,7 @@ public class AutorController {
 	}
 	
 	@DeleteMapping("/deleteAutor/{id}")
-	public String deleteAutor(@PathVariable Long id) {
+	public void deleteAutor(@PathVariable Long id) {
 		autorService.deleteAutor(id);
-		return "Autor deleted successfully";
 	}
 }

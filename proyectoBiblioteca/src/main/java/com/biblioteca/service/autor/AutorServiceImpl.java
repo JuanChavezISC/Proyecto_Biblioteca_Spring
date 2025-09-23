@@ -16,6 +16,10 @@ public class AutorServiceImpl implements IAutorService{
 	@Autowired
 	IAutorRepository autorRepository;
 	
+	@Override
+	public Autor getAutorById(Long id) {
+		return autorRepository.findById(id).orElseThrow(() -> new RuntimeException("Autor no encontrado con id " + id));
+	}
 	//Encontrar todos los autores
 	@Override
 	public List<Autor> findAllAutors() {
@@ -58,5 +62,6 @@ public class AutorServiceImpl implements IAutorService{
 	public void deleteAutor(Long id) {
 		autorRepository.deleteById(id);	
 	}
+
 
 }

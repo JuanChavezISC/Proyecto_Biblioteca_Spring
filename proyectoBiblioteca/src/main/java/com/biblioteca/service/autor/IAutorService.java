@@ -7,6 +7,8 @@ import com.biblioteca.entity.Autor;
 
 public interface IAutorService {
 
+	Autor getAutorById(Long id);
+	
 	List<Autor> findAllAutors();
 	
 	Autor saveAutor(AutorDto autor);
