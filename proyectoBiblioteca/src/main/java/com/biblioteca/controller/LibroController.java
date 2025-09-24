@@ -23,6 +23,11 @@ public class LibroController {
 	@Autowired
 	ILibroService libroService;
 	
+	@GetMapping("/findBookById/{id}")
+	public Libro findBookById(@PathVariable Long id) {
+		return libroService.findBookById(id);
+	}
+	
 	@GetMapping("/findAllBooks")
 	public List<Libro> findAllBooks() {
 		return libroService.findAllBooks();

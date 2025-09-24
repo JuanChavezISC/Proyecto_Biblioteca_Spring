@@ -27,6 +27,11 @@ public class LibroServiceImpl implements ILibroService {
 	ICategoriaRepository categoriaRepository;
 
 	@Override
+	public Libro findBookById(Long id) {
+		return libroRepository.findById(id).orElseThrow(() -> new RuntimeException("Libro no encontrado con el id " + id));
+	}
+	
+	@Override
 	public List<Libro> findAllBooks() {
 		return libroRepository.findAll();
 	}
@@ -85,5 +90,6 @@ public class LibroServiceImpl implements ILibroService {
 		libroRepository.deleteById(id);
 		
 	}
+
 
 }
