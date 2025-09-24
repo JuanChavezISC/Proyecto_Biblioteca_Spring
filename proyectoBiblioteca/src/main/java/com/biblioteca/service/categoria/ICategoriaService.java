@@ -6,6 +6,8 @@ import com.biblioteca.dto.CategoriaDto;
 import com.biblioteca.entity.Categoria;
 
 public interface ICategoriaService {
+	
+	Categoria findCategoriaById(Long id);
 
 	List<Categoria> findAllCategories();
 	

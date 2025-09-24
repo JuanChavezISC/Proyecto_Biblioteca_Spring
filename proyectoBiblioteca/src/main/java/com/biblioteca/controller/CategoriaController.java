@@ -3,6 +3,8 @@ package com.biblioteca.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,10 +20,16 @@ import com.biblioteca.service.categoria.ICategoriaService;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins= {"http://localhost:4200"})
 public class CategoriaController {
 
 	@Autowired
 	ICategoriaService categoriaService;
+	
+	@GetMapping("/findCategoryById/{id}")
+	public Categoria findCategoriaById(@PathVariable  Long id) {
+		return categoriaService.findCategoriaById(id);
+	}
 	
 	@GetMapping("/findAllCategories")
 	public List<Categoria> findAllCategories() {
@@ -39,8 +47,8 @@ public class CategoriaController {
 	}
 	
 	@DeleteMapping("/deleteCategory/{id}")
-	public String deleteCategory(@PathVariable Long id) {
+	public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
 		categoriaService.deleteCategory(id);
-		return "Categoria deleted successfully";
+		return ResponseEntity.noContent().build();
 	}
 }

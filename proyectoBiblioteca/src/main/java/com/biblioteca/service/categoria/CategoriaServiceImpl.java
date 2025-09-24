@@ -17,6 +17,11 @@ public class CategoriaServiceImpl implements ICategoriaService {
 	ICategoriaRepository categoriaRepository;
 	
 	@Override
+	public Categoria findCategoriaById(Long id) {
+		return categoriaRepository.findById(id).orElseThrow(() -> new RuntimeException("Categoria no encontrada con id " + id));
+	}
+	
+	@Override
 	public List<Categoria> findAllCategories() {
 		return categoriaRepository.findAll();
 	}
@@ -41,5 +46,6 @@ public class CategoriaServiceImpl implements ICategoriaService {
 	public void deleteCategory(Long id) {
 		categoriaRepository.deleteById(id);
 	}
+
 
 }
