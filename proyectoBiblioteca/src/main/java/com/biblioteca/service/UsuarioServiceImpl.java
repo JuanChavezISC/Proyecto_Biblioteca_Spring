@@ -15,6 +15,13 @@ public class UsuarioServiceImpl implements IUsuarioService{
 
 	@Autowired
 	IUsuarioRepository usuarioRepository;
+
+	
+	@Override
+	public Usuario findUserById(Long id) {
+		return usuarioRepository.findById(id).orElseThrow(() -> 
+		new RuntimeException("Usuario no encontrado con el id " + id));
+	}
 	
 	// Encontrar Todos los Usuarios
 	@Override
@@ -54,6 +61,7 @@ public class UsuarioServiceImpl implements IUsuarioService{
 		usuarioRepository.deleteById(id);
 		
 	}
+
 
 	
 }

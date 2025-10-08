@@ -6,6 +6,8 @@ import com.biblioteca.dto.UsuarioDto;
 import com.biblioteca.entity.Usuario;
 
 public interface IUsuarioService {
+	
+	Usuario findUserById(Long id);
 
 	List<Usuario> findAllUsers();
 	
