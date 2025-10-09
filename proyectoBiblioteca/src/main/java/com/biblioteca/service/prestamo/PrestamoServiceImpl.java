@@ -26,6 +26,11 @@ public class PrestamoServiceImpl implements IPrestamoService{
 	@Autowired
 	IUsuarioRepository usuarioRepository;
 	
+	@Override
+	public Prestamo findLoanById(Long id) {
+		return prestamoRepository.findById(id).orElseThrow(() -> 
+		new RuntimeException("Prestamo no encontrado con el id " +id));
+	}
 	
 	
 	@Override
@@ -90,5 +95,6 @@ public class PrestamoServiceImpl implements IPrestamoService{
 	public void deleteLoan(Long id) {
 		prestamoRepository.deleteById(id);
 	}
+
 
 }

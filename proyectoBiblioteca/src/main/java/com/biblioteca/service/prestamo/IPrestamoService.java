@@ -7,6 +7,8 @@ import com.biblioteca.entity.Prestamo;
 
 public interface IPrestamoService {
 
+	Prestamo findLoanById(Long id);
+	
 	List<Prestamo> findAllLoans();
 	
 	Prestamo saveLoan(PrestamoDto prestamo);

@@ -36,7 +36,6 @@ public class UsuarioController {
 		return usuarioService.findUserById(id);
 	}
 	
-	
 	@PostMapping("/usuarios")
 	public Usuario saveUser(@RequestBody UsuarioDto usuario) {
 		return usuarioService.saveUser(usuario);

@@ -3,6 +3,7 @@ package com.biblioteca.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,27 +21,33 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins= {"http://localhost:4200"})
 public class PrestamoController {
 
 	@Autowired
 	IPrestamoService prestamoService;
 	
-	@GetMapping("/findAllLoans")
+	@GetMapping("/prestamos")
 	public List<Prestamo> findAllLoans() {
 		return prestamoService.findAllLoans();
 	}
 	
-	@PostMapping("/saveLoan")
+	@GetMapping("prestamos/{id}")
+	public Prestamo findLoanById(@PathVariable Long id) {
+		return prestamoService.findLoanById(id);
+	}
+	
+	@PostMapping("/prestamos")
 	public Prestamo saveLoan(@RequestBody PrestamoDto prestamo) {
 		return prestamoService.saveLoan(prestamo);
 	}
 	
-	@PutMapping("updateLoan/{id}")
+	@PutMapping("prestamos/{id}")
 	public Prestamo updateLoan(@PathVariable Long id, @RequestBody PrestamoDto prestamo) {
 		return prestamoService.updateLoan(id, prestamo);
 	}
 	
-	@DeleteMapping("/deleteLoan/{id}")
+	@DeleteMapping("/prestamos/{id}")
 	public String deleteLoan(@PathVariable Long id) {
 		prestamoService.deleteLoan(id);
 		return "Loan deleted succesfully";
