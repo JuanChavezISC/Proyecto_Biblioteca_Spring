@@ -6,16 +6,34 @@ import java.util.List;
 
 import com.biblioteca.entity.Libro;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
+
 public class AutorDto implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	@NotBlank(message = "El nombre es obligatorio")
+	@Size(max = 50)
 	private String nombre;
+	
+	@NotBlank(message = "El apellido es obligatorio")
+	@Size(max = 80)
 	private String apellido;
+	
+	@NotBlank(message = "La nacionalidad es obligatoria")
+	@Size(max = 80)
 	private String nacionalidad;
+	
+	@PastOrPresent(message = "La fecha de nacimiento no puede ser futura")
 	private LocalDate fechaNacimiento;
+	
+	@Valid
 	private List<Libro> libroList;
 	
 	public String getNombre() {

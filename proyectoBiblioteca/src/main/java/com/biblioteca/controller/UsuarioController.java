@@ -3,6 +3,7 @@ package com.biblioteca.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,8 +48,8 @@ public class UsuarioController {
 	}
 	
 	@DeleteMapping("/usuarios/{id}")
-	public String deleteUser(@PathVariable Long id) {
+	public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
 		usuarioService.deleteUser(id);
-		return "Usuario deleted successfully ";
+		return ResponseEntity.noContent().build();
 	}
 }
