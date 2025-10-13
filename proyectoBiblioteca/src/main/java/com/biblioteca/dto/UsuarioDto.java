@@ -5,6 +5,11 @@ import java.util.List;
 
 import com.biblioteca.entity.Prestamo;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class UsuarioDto implements Serializable {
 
 	/**
@@ -12,9 +17,19 @@ public class UsuarioDto implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@NotBlank(message = "El nombre debe ser obligatorio")
+	@Size(max = 120)
 	private String nombre;
+	
+	@NotBlank(message = "El apellido debe ser obligatorio")
+	@Size(max = 120)
 	private String apellido;
+	
+	@NotBlank(message = "El email es obligatorio")
+	@Email(message = "Debe tener un formato valido. Ejemplo(usuario@example.com")
 	private String email;
+	
+	@Valid
 	private List<Prestamo> prestamo;
 	
 	public String getNombre() {
