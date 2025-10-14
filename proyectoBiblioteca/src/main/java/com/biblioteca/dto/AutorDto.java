@@ -18,6 +18,8 @@ public class AutorDto implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	private Long id;
+	
 	@NotBlank(message = "El nombre es obligatorio")
 	@Size(max = 50)
 	private String nombre;
@@ -65,6 +67,12 @@ public class AutorDto implements Serializable {
 	}
 	public void setLibroList(List<Libro> libroList) {
 		this.libroList = libroList;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	
