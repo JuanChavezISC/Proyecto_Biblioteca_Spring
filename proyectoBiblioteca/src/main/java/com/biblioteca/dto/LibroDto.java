@@ -16,6 +16,9 @@ public class LibroDto implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private Long libroId;
+	
 	@NotBlank(message = "El titulo debe ser obligatorio")
 	@Size(max = 120)
 	private String titulo;
@@ -64,6 +67,12 @@ public class LibroDto implements Serializable {
 	}
 	public void setCategoriaId(Long categoriaId) {
 		this.categoriaId = categoriaId;
+	}
+	public Long getLibroId() {
+		return libroId;
+	}
+	public void setLibroId(Long libroId) {
+		this.libroId = libroId;
 	}
 
 	
