@@ -17,6 +17,7 @@ public class PrestamoDto implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	private Long prestamoId; 
 	
 	@NotNull(message = "El libro es obligatorio")
 	@Positive(message = "El Id del libro debe ser positivo")
@@ -64,6 +65,12 @@ public class PrestamoDto implements Serializable{
 	}
 	public void setDevuelto(Boolean devuelto) {
 		this.devuelto = devuelto;
+	}
+	public Long getPrestamoId() {
+		return prestamoId;
+	}
+	public void setPrestamoId(Long prestamoId) {
+		this.prestamoId = prestamoId;
 	}
 	
 }
