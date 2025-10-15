@@ -3,8 +3,6 @@ package com.biblioteca.dto;
 import java.io.Serializable;
 import java.util.List;
 
-import com.biblioteca.entity.Prestamo;
-
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -32,13 +30,19 @@ public class UsuarioDto implements Serializable {
 	private String email;
 	
 	@Valid
-	private List<Prestamo> prestamo;
+	private List<PrestamoDto> prestamo;
 	
 	public String getNombre() {
 		return nombre;
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+	public List<PrestamoDto> getPrestamo() {
+		return prestamo;
+	}
+	public void setPrestamo(List<PrestamoDto> prestamo) {
+		this.prestamo = prestamo;
 	}
 	public String getApellido() {
 		return apellido;
@@ -52,12 +56,7 @@ public class UsuarioDto implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public List<Prestamo> getPrestamo() {
-		return prestamo;
-	}
-	public void setPrestamo(List<Prestamo> prestamo) {
-		this.prestamo = prestamo;
-	}
+
 	public Long getUsuarioId() {
 		return usuarioId;
 	}

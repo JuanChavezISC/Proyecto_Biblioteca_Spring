@@ -54,6 +54,16 @@ public class Usuario {
 	}
 
 
+	public List<Prestamo> getPrestamo() {
+		return prestamo;
+	}
+
+
+	public void setPrestamo(List<Prestamo> prestamo) {
+		this.prestamo = prestamo;
+	}
+
+
 	public Usuario(String nombre, String apellido, String email) {
 		super();
 		this.nombre = nombre;

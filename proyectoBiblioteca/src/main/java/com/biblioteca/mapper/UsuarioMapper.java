@@ -12,6 +12,14 @@ import com.biblioteca.entity.Usuario;
 public class UsuarioMapper {
 
 	
+	private final PrestamoMapper prestamoMapper;
+	
+	
+	public UsuarioMapper(PrestamoMapper prestamoMapper) {
+		super();
+		this.prestamoMapper = prestamoMapper;
+	}
+
 	// Convertir de entidad a DTO
 	public UsuarioDto toDto(Usuario usuario) {
 		if (usuario == null) {
@@ -23,6 +31,10 @@ public class UsuarioMapper {
 		dto.setNombre(usuario.getNombre());
 		dto.setApellido(usuario.getApellido());
 		dto.setEmail(usuario.getEmail());
+		
+		if (usuario.getPrestamo() != null) {
+			dto.setPrestamo(prestamoMapper.toDtoList(usuario.getPrestamo()));
+		}
 		
 		return dto;
 	}
@@ -39,6 +51,9 @@ public class UsuarioMapper {
 		usuario.setApellido(dto.getApellido());
 		usuario.setEmail(dto.getEmail());
 		
+		if (dto.getPrestamo() != null) {
+			usuario.setPrestamo(prestamoMapper.toEntityList(dto.getPrestamo()));
+		}
 		return usuario;
 	}
 	
