@@ -2,44 +2,71 @@ package com.biblioteca.service.autor;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.biblioteca.dto.AutorDto;
 import com.biblioteca.entity.Autor;
+import com.biblioteca.mapper.AutorMapper;
 import com.biblioteca.repository.IAutorRepository;
 
 @Service
 public class AutorServiceImpl implements IAutorService{
 
-	@Autowired
-	IAutorRepository autorRepository;
+    private final AutorMapper autorMapper;
+
+	private final IAutorRepository autorRepository;
+	
+	
+	
+	public AutorServiceImpl(IAutorRepository autorRepository, AutorMapper autorMapper) {
+		super();
+		this.autorRepository = autorRepository;
+		this.autorMapper = autorMapper;
+	}
+	
 	
 	@Override
-	public Autor getAutorById(Long id) {
-		return autorRepository.findById(id).orElseThrow(() -> new RuntimeException("Autor no encontrado con id " + id));
+	@Transactional(readOnly = true)
+	public AutorDto getAutorById(Long id) {
+		Autor aut = autorRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("Autor no encontrado con id " + id));
+		
+		AutorDto dto = new AutorDto();
+		dto.setAutorId(aut.getAutorId());
+		dto.setNombre(aut.getNombre());
+		dto.setApellido(aut.getApellido());
+		dto.setNacionalidad(aut.getNacionalidad());
+		dto.setFechaNacimiento(aut.getFechaNacimiento());
+		
+		return dto;
 	}
+	
 	//Encontrar todos los autores
 	@Override
-	public List<Autor> findAllAutors() {
-		return autorRepository.findAll();
+	@Transactional(readOnly = true)
+	public List<AutorDto> findAllAutors() {
+		return autorRepository.findAll()
+				.stream()
+				.map(a -> autorMapper.toDto(a, true))
+				.collect(Collectors.toList());
 	}
 
 	// Guardar todos los autores
 	@Override
-	public Autor saveAutor(AutorDto autor) {
+	public AutorDto saveAutor(AutorDto dto) {
 
-		Autor autorEntity = new Autor();
-		autorEntity.setNombre(autor.getNombre());
-		autorEntity.setApellido(autor.getApellido());
-		autorEntity.setNacionalidad(autor.getNacionalidad());
-		autorEntity.setFechaNacimiento(autor.getFechaNacimiento());
-		return autorRepository.save(autorEntity);
+		Autor autorEntity = autorMapper.toEntity(dto);
+		Autor guardado = autorRepository.save(autorEntity);
+		
+		AutorDto resultado = autorMapper.toDto(guardado, false);
+		return resultado;
 	}
 
 	@Override
-	public Autor updateAutor(Long id, AutorDto autor) {
+	public AutorDto updateAutor(Long id, AutorDto autor) {
 		Autor autorDb = autorRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("autor no encontrado con id " + id ));
 		
@@ -55,7 +82,10 @@ public class AutorServiceImpl implements IAutorService{
 		if (Objects.nonNull(autor.getFechaNacimiento())) {
 			autorDb.setFechaNacimiento(autor.getFechaNacimiento());
 		}
-		return autorRepository.save(autorDb);
+		
+		Autor actualizado = autorRepository.save(autorDb);
+		
+		return autorMapper.toDto(actualizado, false);
 	}
 
 	@Override

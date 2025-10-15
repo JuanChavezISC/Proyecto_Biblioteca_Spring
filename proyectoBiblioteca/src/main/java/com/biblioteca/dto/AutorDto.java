@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.biblioteca.entity.Libro;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -18,7 +17,7 @@ public class AutorDto implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private Long id;
+	private Long autorId;
 	
 	@NotBlank(message = "El nombre es obligatorio")
 	@Size(max = 50)
@@ -36,7 +35,7 @@ public class AutorDto implements Serializable {
 	private LocalDate fechaNacimiento;
 	
 	@Valid
-	private List<Libro> libroList;
+	private List<LibroDto> libros;
 	
 	public String getNombre() {
 		return nombre;
@@ -62,18 +61,21 @@ public class AutorDto implements Serializable {
 	public void setFechaNacimiento(LocalDate fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
-	public List<Libro> getLibroList() {
-		return libroList;
+	
+	public Long getAutorId() {
+		return autorId;
 	}
-	public void setLibroList(List<Libro> libroList) {
-		this.libroList = libroList;
+	public void setAutorId(Long autorId) {
+		this.autorId = autorId;
 	}
-	public Long getId() {
-		return id;
+	public List<LibroDto> getLibros() {
+		return libros;
 	}
-	public void setId(Long id) {
-		this.id = id;
+	public void setLibros(List<LibroDto> libros) {
+		this.libros = libros;
 	}
+
+
 	
 	
 }

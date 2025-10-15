@@ -36,6 +36,7 @@ public class Autor {
 	@OneToMany(mappedBy = "autor")
 	private List<Libro> libroList;
 	
+
 	// Constructores 
 	public Autor() {
 		super();
@@ -90,6 +91,13 @@ public class Autor {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
+	public List<Libro> getLibroList() {
+		return libroList;
+	}
+	
+	public void setLibroList(List<Libro> libroList) {
+		this.libroList = libroList;
+	}
 	// toString
 	@Override
 	public String toString() {

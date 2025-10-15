@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.biblioteca.dto.LibroDto;
 import com.biblioteca.entity.Autor;
+import com.biblioteca.entity.Categoria;
 import com.biblioteca.entity.Libro;
 
 @Component
@@ -12,9 +13,8 @@ public class LibroMapper {
 	// Convertir de Entidad a DTO
 	public LibroDto toDto(Libro libro) {
 		
-		if (libro == null) {
-			return null;
-		}
+		if (libro == null) return null;
+		
 		
 		LibroDto dto = new LibroDto();
 		dto.setLibroId(libro.getLibroId());
@@ -50,6 +50,12 @@ public class LibroMapper {
 			Autor autor = new Autor();
 			autor.setAutorId(dto.getAutorId());
 			libro.setAutor(autor);
+		}
+		
+		if (dto.getCategoriaId() != null) {
+			Categoria categoria = new Categoria();
+			categoria.setCategoriaId(dto.getCategoriaId());
+			libro.setCategoria(categoria);
 		}
 		
 		return libro;

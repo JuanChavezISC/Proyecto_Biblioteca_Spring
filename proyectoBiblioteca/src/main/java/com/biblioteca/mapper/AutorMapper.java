@@ -1,35 +1,59 @@
 package com.biblioteca.mapper;
 
-import org.springframework.stereotype.Component;
+import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Component;
 import com.biblioteca.dto.AutorDto;
+import com.biblioteca.dto.LibroDto;
 import com.biblioteca.entity.Autor;
 
 @Component
 public class AutorMapper {
 
-	public static AutorDto toDto(Autor autor) {
+	// Convertir Autor a AutorDto
+	public AutorDto toDto(Autor autor, boolean incluirLibros) {
 		if (autor == null) return null;
 		
 		
 		AutorDto dto = new AutorDto();
-		dto.setId(autor.getAutorId());
+		dto.setAutorId(autor.getAutorId());
 		dto.setNombre(autor.getNombre());
 		dto.setApellido(autor.getApellido());
 		dto.setNacionalidad(autor.getNacionalidad());
 		dto.setFechaNacimiento(autor.getFechaNacimiento());
 		
+		if (incluirLibros && autor.getLibroList() != null) {
+			dto.setLibros(
+					autor.getLibroList()
+					.stream()
+					.map(libro -> {
+						LibroDto libroDto = new LibroDto();
+						libroDto.setLibroId(libro.getLibroId());
+						libroDto.setTitulo(libro.getTitulo());
+						libroDto.setIsbn(libro.getIsbn());
+						libroDto.setFechaPublicacion(libro.getFechaPublicacion());
+						
+						libroDto.setAutorId(libro.getAutor() != null 
+												? libro.getAutor().getAutorId() :null);
+						libroDto.setCategoriaId(libro.getCategoria() != null
+													? libro.getCategoria().getCategoriaId(): null);
+						return libroDto;
+					})
+					.collect(Collectors.toList())
+					);
+		}
+		
 		return dto;
 	}
 	
-	// Convertir de DTO a Entidad
+	// Convertir de AutorDto a Entidad
 	
-	public static Autor toEntity(AutorDto dto) {
+	public  Autor toEntity(AutorDto dto) {
 		
 		if (dto == null) return null;
 		
 		Autor autor = new Autor();
-		autor.setAutorId(dto.getId());
+		autor.setAutorId(dto.getAutorId());
 		autor.setNombre(dto.getNombre());
 		autor.setApellido(dto.getApellido());
 		autor.setNacionalidad(dto.getNacionalidad());
@@ -37,4 +61,5 @@ public class AutorMapper {
 
 		return autor;
 	}
+	
 }
