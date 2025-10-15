@@ -1,9 +1,12 @@
 package com.biblioteca.mapper;
 
+import org.springframework.stereotype.Component;
+
 import com.biblioteca.dto.LibroDto;
 import com.biblioteca.entity.Autor;
 import com.biblioteca.entity.Libro;
 
+@Component
 public class LibroMapper {
 
 	// Convertir de Entidad a DTO
@@ -49,7 +52,7 @@ public class LibroMapper {
 			libro.setAutor(autor);
 		}
 		
-		return null;
+		return libro;
 	}
 	
 }

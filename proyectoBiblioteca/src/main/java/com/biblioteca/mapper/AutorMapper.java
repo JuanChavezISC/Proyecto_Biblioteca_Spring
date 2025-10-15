@@ -1,8 +1,11 @@
 package com.biblioteca.mapper;
 
+import org.springframework.stereotype.Component;
+
 import com.biblioteca.dto.AutorDto;
 import com.biblioteca.entity.Autor;
 
+@Component
 public class AutorMapper {
 
 	public static AutorDto toDto(Autor autor) {

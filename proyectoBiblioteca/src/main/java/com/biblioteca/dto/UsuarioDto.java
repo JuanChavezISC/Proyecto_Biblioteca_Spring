@@ -16,6 +16,8 @@ public class UsuarioDto implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private Long usuarioId;
 
 	@NotBlank(message = "El nombre debe ser obligatorio")
 	@Size(max = 120)
@@ -55,6 +57,12 @@ public class UsuarioDto implements Serializable {
 	}
 	public void setPrestamo(List<Prestamo> prestamo) {
 		this.prestamo = prestamo;
+	}
+	public Long getUsuarioId() {
+		return usuarioId;
+	}
+	public void setUsuarioId(Long usuarioId) {
+		this.usuarioId = usuarioId;
 	}
 	
 	
