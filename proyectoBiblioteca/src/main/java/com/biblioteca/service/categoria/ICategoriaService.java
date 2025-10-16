@@ -3,17 +3,12 @@ package com.biblioteca.service.categoria;
 import java.util.List;
 
 import com.biblioteca.dto.CategoriaDto;
-import com.biblioteca.entity.Categoria;
 
 public interface ICategoriaService {
 	
-	Categoria findCategoriaById(Long id);
-
-	List<Categoria> findAllCategories();
-	
-	Categoria saveCategory(CategoriaDto categoria);
-	
-	Categoria updateCategory(Long id, CategoriaDto categoria);
-	
+	List<CategoriaDto> findAllCategories();
+	CategoriaDto findCategoriaById(Long id);	
+	CategoriaDto saveCategory(CategoriaDto categoria);
+	CategoriaDto updateCategory(Long id, CategoriaDto categoria);
 	void deleteCategory(Long id);
 }
