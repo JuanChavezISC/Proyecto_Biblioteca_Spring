@@ -34,14 +34,7 @@ public class AutorServiceImpl implements IAutorService{
 		Autor aut = autorRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Autor no encontrado con id " + id));
 		
-		AutorDto dto = new AutorDto();
-		dto.setAutorId(aut.getAutorId());
-		dto.setNombre(aut.getNombre());
-		dto.setApellido(aut.getApellido());
-		dto.setNacionalidad(aut.getNacionalidad());
-		dto.setFechaNacimiento(aut.getFechaNacimiento());
-		
-		return dto;
+		return autorMapper.toDto(aut, false);
 	}
 	
 	//Encontrar todos los autores

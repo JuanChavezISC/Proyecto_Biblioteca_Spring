@@ -1,5 +1,6 @@
 package com.biblioteca.mapper;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
@@ -22,10 +23,11 @@ public class AutorMapper {
 		dto.setNacionalidad(autor.getNacionalidad());
 		dto.setFechaNacimiento(autor.getFechaNacimiento());
 		
-		if (incluirLibros && autor.getLibroList() != null) {
+		if (incluirLibros && autor.getLibroList() != null && !autor.getLibroList().isEmpty()) {
 			dto.setLibros(
 					autor.getLibroList()
 					.stream()
+					.filter(Objects::nonNull)
 					.map(libro -> {
 						LibroDto libroDto = new LibroDto();
 						libroDto.setLibroId(libro.getLibroId());

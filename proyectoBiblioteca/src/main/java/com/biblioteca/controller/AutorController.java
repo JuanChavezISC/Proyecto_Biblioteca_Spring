@@ -1,9 +1,9 @@
 package com.biblioteca.controller;
 
+import java.net.URI;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,15 +14,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.biblioteca.dto.AutorDto;
-import com.biblioteca.entity.Autor;
 import com.biblioteca.service.autor.IAutorService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 
 @RestController
 @RequestMapping("/api")
@@ -30,29 +29,40 @@ import jakarta.validation.Valid;
 @CrossOrigin(origins= {"http://localhost:4200"})
 public class AutorController {
 
-	@Autowired
-	IAutorService autorService;
 	
+	private final IAutorService autorService;
+	
+	public AutorController(IAutorService autorService) {
+		super();
+		this.autorService = autorService;
+	}
+
 	@GetMapping("/autores")
-	@ResponseStatus (HttpStatus.OK)
-	public List<Autor> autors() {
-		return autorService.findAllAutors();
+	public ResponseEntity<List<AutorDto>> autors() {
+		return ResponseEntity.ok(autorService.findAllAutors());		
 	}
 	
 	@GetMapping("/autores/{id}")
-	public Autor getAutorById(@PathVariable Long id) {
-		return autorService.getAutorById(id);
+	public ResponseEntity<AutorDto> getAutorById(@PathVariable @Min(1) Long id) {
+		return ResponseEntity.ok(autorService.getAutorById(id));
 	}
 	
 	@PostMapping("/autores")
-	public Autor saveAutor(@Valid  @RequestBody AutorDto autor,
+	public ResponseEntity<AutorDto>saveAutor(@Valid  @RequestBody AutorDto autor,
 										UriComponentsBuilder uriBuilder) {
-		return autorService.saveAutor(autor);
+		
+		AutorDto creado = autorService.saveAutor(autor);
+		URI location = uriBuilder.path("/api/autores/{id}")
+				.buildAndExpand(creado.getAutorId())
+				.toUri();
+		return ResponseEntity.created(location).body(creado);
 	}
 	
 	@PutMapping("/autores/{id}")
-	public Autor updateAutor(@PathVariable Long id, @RequestBody AutorDto autor) {
-		return autorService.updateAutor(id, autor);
+	public ResponseEntity<AutorDto> updateAutor(@PathVariable @Min(1) Long id,
+													@RequestBody AutorDto autor) {
+		AutorDto actualizado = autorService.updateAutor(id, autor); 
+		return ResponseEntity.ok(actualizado);
 	}
 	
 	@DeleteMapping("/autores/{id}")
