@@ -60,7 +60,7 @@ public class CategoriaController {
 	
 	@PutMapping("/categorias/{id}")
 	public ResponseEntity<CategoriaDto> updateCategory(@PathVariable @Min(1) Long id, 
-															@RequestBody CategoriaDto categoria) {
+														@Valid	@RequestBody CategoriaDto categoria) {
 		CategoriaDto actualizado = categoriaService.updateCategory(id, categoria);
 		return ResponseEntity.ok(actualizado);
 	}

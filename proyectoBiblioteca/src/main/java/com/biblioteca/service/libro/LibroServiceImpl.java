@@ -2,14 +2,16 @@ package com.biblioteca.service.libro;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.biblioteca.dto.LibroDto;
 import com.biblioteca.entity.Autor;
 import com.biblioteca.entity.Categoria;
 import com.biblioteca.entity.Libro;
+import com.biblioteca.mapper.LibroMapper;
 import com.biblioteca.repository.IAutorRepository;
 import com.biblioteca.repository.ICategoriaRepository;
 import com.biblioteca.repository.ILibroRepository;
@@ -17,27 +19,41 @@ import com.biblioteca.repository.ILibroRepository;
 @Service
 public class LibroServiceImpl implements ILibroService {
 	
-	@Autowired
-	ILibroRepository libroRepository;
-	
-	@Autowired
-	IAutorRepository autorRepository;
-	
-	@Autowired
-	ICategoriaRepository categoriaRepository;
+	private final LibroMapper libroMapper;
+	private final ILibroRepository libroRepository;
+	private final IAutorRepository autorRepository;
+	private final ICategoriaRepository categoriaRepository;
 
-	@Override
-	public Libro findBookById(Long id) {
-		return libroRepository.findById(id).orElseThrow(() -> new RuntimeException("Libro no encontrado con el id " + id));
-	}
 	
-	@Override
-	public List<Libro> findAllBooks() {
-		return libroRepository.findAll();
+	public LibroServiceImpl(LibroMapper libroMapper, ILibroRepository libroRepository, IAutorRepository autorRepository,
+			ICategoriaRepository categoriaRepository) {
+		super();
+		this.libroMapper = libroMapper;
+		this.libroRepository = libroRepository;
+		this.autorRepository = autorRepository;
+		this.categoriaRepository = categoriaRepository;
 	}
 
 	@Override
-	public Libro saveBook(LibroDto libro) {
+	@Transactional(readOnly = true)
+	public LibroDto findBookById(Long id) {
+		Libro lib = libroRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("Libro no encontrado con el id " + id));
+		
+		return libroMapper.toDto(lib);
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<LibroDto> findAllBooks() {
+		return libroRepository.findAll()
+				.stream()
+				.map(l -> libroMapper.toDto(l))
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public LibroDto saveBook(LibroDto libro) {
 		
 		Autor autorExistente = autorRepository.findById(libro.getAutorId())
 				.orElseThrow(() -> new RuntimeException("autor no encontrado, ingrese un id diferente"));
@@ -45,17 +61,21 @@ public class LibroServiceImpl implements ILibroService {
 		Categoria categoriaExistente = categoriaRepository.findById(libro.getCategoriaId())
 				.orElseThrow(() -> new RuntimeException("categoria no encontrada"));
 		
-		Libro libroEntity = new Libro();
-		libroEntity.setTitulo(libro.getTitulo());
-		libroEntity.setIsbn(libro.getIsbn());
-		libroEntity.setFechaPublicacion(libro.getFechaPublicacion());
+		Libro libroEntity = libroMapper.toEntity(libro);
+		
+		// Asocia autor y categoria 
 		libroEntity.setAutor(autorExistente);
 		libroEntity.setCategoria(categoriaExistente);
-		return libroRepository.save(libroEntity);
+		
+		// Guardar en base de datos
+		
+		Libro guardado = libroRepository.save(libroEntity);
+		
+		return libroMapper.toDto(guardado);
 	}
 
 	@Override
-	public Libro updateBook(Long id, LibroDto libro) {
+	public LibroDto updateBook(Long id, LibroDto libro) {
 		
 		Libro libroDb = libroRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Libro no encontrado con id " + id));
@@ -82,7 +102,9 @@ public class LibroServiceImpl implements ILibroService {
 			libroDb.setCategoria(categoriaExistente);
 		}
 		
-		return libroRepository.save(libroDb);
+		Libro actualizado = libroRepository.save(libroDb);
+		
+		return libroMapper.toDto(actualizado);
 	}
 
 	@Override

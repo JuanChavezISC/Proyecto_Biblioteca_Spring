@@ -25,8 +25,8 @@ import jakarta.validation.constraints.Min;
 
 @RestController
 @RequestMapping("/api")
-@Validated
 @CrossOrigin(origins= {"http://localhost:4200"})
+@Validated
 public class AutorController {
 
 	
@@ -60,7 +60,7 @@ public class AutorController {
 	
 	@PutMapping("/autores/{id}")
 	public ResponseEntity<AutorDto> updateAutor(@PathVariable @Min(1) Long id,
-													@RequestBody AutorDto autor) {
+													@Valid @RequestBody AutorDto autor) {
 		AutorDto actualizado = autorService.updateAutor(id, autor); 
 		return ResponseEntity.ok(actualizado);
 	}
