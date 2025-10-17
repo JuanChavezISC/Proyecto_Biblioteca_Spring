@@ -2,14 +2,16 @@ package com.biblioteca.service.prestamo;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.biblioteca.dto.PrestamoDto;
 import com.biblioteca.entity.Libro;
 import com.biblioteca.entity.Prestamo;
 import com.biblioteca.entity.Usuario;
+import com.biblioteca.mapper.PrestamoMapper;
 import com.biblioteca.repository.ILibroRepository;
 import com.biblioteca.repository.IPrestamoRepository;
 import com.biblioteca.repository.IUsuarioRepository;
@@ -17,48 +19,68 @@ import com.biblioteca.repository.IUsuarioRepository;
 @Service
 public class PrestamoServiceImpl implements IPrestamoService{
 
-	@Autowired
-	IPrestamoRepository prestamoRepository;
+	private final PrestamoMapper prestamoMapper;
 	
-	@Autowired
-	ILibroRepository libroRepository;
+	private final IPrestamoRepository prestamoRepository;
 	
-	@Autowired
-	IUsuarioRepository usuarioRepository;
+	private final ILibroRepository libroRepository;
 	
-	@Override
-	public Prestamo findLoanById(Long id) {
-		return prestamoRepository.findById(id).orElseThrow(() -> 
-		new RuntimeException("Prestamo no encontrado con el id " +id));
+	private final IUsuarioRepository usuarioRepository;
+	
+	public PrestamoServiceImpl(PrestamoMapper prestamoMapper, IPrestamoRepository prestamoRepository,
+			ILibroRepository libroRepository, IUsuarioRepository usuarioRepository) {
+		super();
+		this.prestamoMapper = prestamoMapper;
+		this.prestamoRepository = prestamoRepository;
+		this.libroRepository = libroRepository;
+		this.usuarioRepository = usuarioRepository;
 	}
 	
-	
+	// Encontrar los prestamos por Id
 	@Override
-	public List<Prestamo> findAllLoans() {
-		return prestamoRepository.findAll();
+	@Transactional(readOnly = true)
+	public PrestamoDto findLoanById(Long id) {
+		Prestamo pres = prestamoRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("Prestamo no encontrado con el id " +id));
+		return prestamoMapper.toDto(pres);
+		
+	}
+	
+	// Encontrar todos los prestamos
+	@Override
+	@Transactional(readOnly = true)
+	public List<PrestamoDto> findAllLoans() {
+		return prestamoRepository.findAll()
+				.stream()
+				.map(pr -> prestamoMapper.toDto(pr))
+				.collect(Collectors.toList());
 	}
 
 	@Override
-	public Prestamo saveLoan(PrestamoDto prestamo) {
+	public PrestamoDto saveLoan(PrestamoDto prestamo) {
 
 		Usuario usuarioExistente = usuarioRepository.findById(prestamo.getUsuarioId())
-				.orElseThrow(() -> new RuntimeException("usuario no encontrado"));
+				.orElseThrow(() -> new RuntimeException("usuario no encontrado, ingrese un id diferente"));
 		
 		Libro libroExistente = libroRepository.findById(prestamo.getLibroId())
-				.orElseThrow(() -> new RuntimeException("libro no encontrado"));
+				.orElseThrow(() -> new RuntimeException("libro no encontrado, ingrese un id diferente"));
 		
-		Prestamo prestamoEntity = new Prestamo();
-		prestamoEntity.setLibro(libroExistente);
+		Prestamo prestamoEntity = prestamoMapper.toEntity(prestamo);
+		
+		// Asociar usuario y libro
+		
 		prestamoEntity.setUsuario(usuarioExistente);
-		prestamoEntity.setFechaPrestamo(prestamo.getFechaPrestamo());
-		prestamoEntity.setFechaDevolucion(prestamo.getFechaDevolucion());
-		prestamoEntity.setDevuelto(false);
+		prestamoEntity.setLibro(libroExistente);
 		
-		return prestamoRepository.save(prestamoEntity);
+		// Guardar en base de datos
+		
+		Prestamo guardado = prestamoRepository.save(prestamoEntity);
+		
+		return prestamoMapper.toDto(guardado);
 	}
 
 	@Override
-	public Prestamo updateLoan(Long id, PrestamoDto prestamo) {
+	public PrestamoDto updateLoan(Long id, PrestamoDto prestamo) {
 		
 		Prestamo prestamoDb = prestamoRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Prestamo no encontrado con id " + id));
@@ -86,9 +108,9 @@ public class PrestamoServiceImpl implements IPrestamoService{
 			prestamoDb.setDevuelto(prestamo.getDevuelto());
 		}
 		
+		Prestamo actualizado = prestamoRepository.save(prestamoDb);
 		
-		
-		return prestamoRepository.save(prestamoDb);
+		return prestamoMapper.toDto(actualizado);
 	}
 
 	@Override

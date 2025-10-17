@@ -32,7 +32,7 @@ public class AutorServiceImpl implements IAutorService{
 	@Transactional(readOnly = true)
 	public AutorDto getAutorById(Long id) {
 		Autor aut = autorRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Autor no encontrado con id " + id));
+				.orElseThrow(() -> new RuntimeException("Autor no encontrado con id " + id));	
 		
 		return autorMapper.toDto(aut, false);
 	}
