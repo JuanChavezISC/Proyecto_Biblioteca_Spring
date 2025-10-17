@@ -2,46 +2,61 @@ package com.biblioteca.service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.biblioteca.dto.UsuarioDto;
 import com.biblioteca.entity.Usuario;
+import com.biblioteca.mapper.UsuarioMapper;
 import com.biblioteca.repository.IUsuarioRepository;
 
 @Service
 public class UsuarioServiceImpl implements IUsuarioService{
-
-	@Autowired
-	IUsuarioRepository usuarioRepository;
-
 	
+	private final UsuarioMapper usuarioMapper;
+	
+	private final IUsuarioRepository usuarioRepository;
+	
+	public UsuarioServiceImpl(UsuarioMapper usuarioMapper, IUsuarioRepository usuarioRepository) {
+		super();
+		this.usuarioMapper = usuarioMapper;
+		this.usuarioRepository = usuarioRepository;
+	}
+
 	@Override
-	public Usuario findUserById(Long id) {
-		return usuarioRepository.findById(id).orElseThrow(() -> 
+	@Transactional(readOnly = true)
+	public UsuarioDto findUserById(Long id) {
+		Usuario user = usuarioRepository.findById(id).orElseThrow(() -> 
 		new RuntimeException("Usuario no encontrado con el id " + id));
+		
+		return usuarioMapper.toDto(user);
 	}
 	
 	// Encontrar Todos los Usuarios
 	@Override
-	public List<Usuario> findAllUsers() {
-		return usuarioRepository.findAll();
+	@Transactional(readOnly = true)
+	public List<UsuarioDto> findAllUsers() {
+		return usuarioRepository.findAll()
+				.stream()
+				.map(u -> usuarioMapper.toDto(u))
+				.collect(Collectors.toList());
 	}
 
 	// Guardar todos los usuarios
 	@Override
-	public Usuario saveUser(UsuarioDto usuario) {
-		Usuario usuarioEntity = new Usuario();
-		usuarioEntity.setNombre(usuario.getNombre());
-		usuarioEntity.setApellido(usuario.getApellido());
-		usuarioEntity.setEmail(usuario.getEmail());
-		return usuarioRepository.save(usuarioEntity);
+	public UsuarioDto saveUser(UsuarioDto usuario) {
+		Usuario usuarioEntity = usuarioMapper.toEntity(usuario);
+		
+		Usuario guardado = usuarioRepository.save(usuarioEntity);
+		
+		return usuarioMapper.toDto(guardado);
 	}
 
 	// Actualizar Usuario
 	@Override
-	public Usuario updateUser(Long id, UsuarioDto usuario) {
+	public UsuarioDto updateUser(Long id, UsuarioDto usuario) {
 		
 		Usuario usuarioDb = usuarioRepository.findById(id).get();
 		if (Objects.nonNull(usuario.getNombre()) && !"".equalsIgnoreCase(usuario.getNombre())) {
@@ -53,7 +68,9 @@ public class UsuarioServiceImpl implements IUsuarioService{
 		if (Objects.nonNull(usuario.getEmail()) && !"".equalsIgnoreCase(usuario.getEmail())) {
 			usuarioDb.setEmail(usuario.getEmail());
 		}
-		return usuarioRepository.save(usuarioDb);
+		
+		Usuario actualizado = usuarioRepository.save(usuarioDb);
+		return usuarioMapper.toDto(actualizado);
 	}
 
 	@Override

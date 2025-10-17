@@ -1,9 +1,10 @@
 package com.biblioteca.controller;
 
+import java.net.URI;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,38 +14,53 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.biblioteca.dto.UsuarioDto;
-import com.biblioteca.entity.Usuario;
 import com.biblioteca.service.IUsuarioService;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins= {"http://localhost:4200"})
+@Validated
 public class UsuarioController {
 
-	@Autowired
-	IUsuarioService usuarioService;
+	private final IUsuarioService usuarioService;
 	
-	
+	public UsuarioController(IUsuarioService usuarioService) {
+		super();
+		this.usuarioService = usuarioService;
+	}
+
 	@GetMapping("/usuarios")
-	public List<Usuario> findAllUsers(){
-		return usuarioService.findAllUsers();
+	public ResponseEntity<List<UsuarioDto>> findAllUsers(){
+		return ResponseEntity.ok(usuarioService.findAllUsers());
 	}
 	
 	@GetMapping("/usuarios/{id}")
-	public Usuario findUserById(@PathVariable Long id) {
-		return usuarioService.findUserById(id);
+	public ResponseEntity<UsuarioDto> getUserById(@PathVariable @Min(1) Long id) {
+		return ResponseEntity.ok(usuarioService.findUserById(id));
 	}
 	
 	@PostMapping("/usuarios")
-	public Usuario saveUser(@RequestBody UsuarioDto usuario) {
-		return usuarioService.saveUser(usuario);
+	public ResponseEntity<UsuarioDto> saveUser(@Valid @RequestBody UsuarioDto usuario,
+													UriComponentsBuilder uriBuilder) {
+		
+		UsuarioDto creado = usuarioService.saveUser(usuario);
+		URI location = uriBuilder.path("api/usuarios/{id}")
+				.buildAndExpand(creado.getUsuarioId())
+				.toUri();
+		return ResponseEntity.created(location).body(creado);
 	}
 	
 	@PutMapping("/usuarios/{id}") //PathVariable recibe variable en URL
-	public Usuario updateUser(@PathVariable Long id, @RequestBody UsuarioDto usuario) {
-		return usuarioService.updateUser(id, usuario);
+	public ResponseEntity<UsuarioDto> updateUser(@PathVariable Long id, 
+													@Valid @RequestBody UsuarioDto usuario) {
+		UsuarioDto actualizado = usuarioService.updateUser(id, usuario);
+		return ResponseEntity.ok(actualizado);
 	}
 	
 	@DeleteMapping("/usuarios/{id}")
