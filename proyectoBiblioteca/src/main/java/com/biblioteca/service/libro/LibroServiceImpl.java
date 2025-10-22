@@ -11,6 +11,7 @@ import com.biblioteca.dto.LibroDto;
 import com.biblioteca.entity.Autor;
 import com.biblioteca.entity.Categoria;
 import com.biblioteca.entity.Libro;
+import com.biblioteca.exception.GlobalExceptionHandler;
 import com.biblioteca.mapper.LibroMapper;
 import com.biblioteca.repository.IAutorRepository;
 import com.biblioteca.repository.ICategoriaRepository;
@@ -18,6 +19,8 @@ import com.biblioteca.repository.ILibroRepository;
 
 @Service
 public class LibroServiceImpl implements ILibroService {
+
+    private final GlobalExceptionHandler globalExceptionHandler;
 	
 	private final LibroMapper libroMapper;
 	private final ILibroRepository libroRepository;
@@ -26,12 +29,13 @@ public class LibroServiceImpl implements ILibroService {
 
 	
 	public LibroServiceImpl(LibroMapper libroMapper, ILibroRepository libroRepository, IAutorRepository autorRepository,
-			ICategoriaRepository categoriaRepository) {
+			ICategoriaRepository categoriaRepository, GlobalExceptionHandler globalExceptionHandler) {
 		super();
 		this.libroMapper = libroMapper;
 		this.libroRepository = libroRepository;
 		this.autorRepository = autorRepository;
 		this.categoriaRepository = categoriaRepository;
+		this.globalExceptionHandler = globalExceptionHandler;
 	}
 
 	@Override
@@ -109,7 +113,8 @@ public class LibroServiceImpl implements ILibroService {
 
 	@Override
 	public void deleteBook(Long id) {
-		libroRepository.deleteById(id);		
+		libroRepository.deleteById(id);
+		System.out.println("Libro eliminado correctamente");
 	}
 
 
