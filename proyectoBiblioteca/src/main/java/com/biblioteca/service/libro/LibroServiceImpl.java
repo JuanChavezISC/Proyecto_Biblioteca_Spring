@@ -114,7 +114,6 @@ public class LibroServiceImpl implements ILibroService {
 	@Override
 	public void deleteBook(Long id) {
 		libroRepository.deleteById(id);
-		System.out.println("Libro eliminado correctamente");
 	}
 
 
