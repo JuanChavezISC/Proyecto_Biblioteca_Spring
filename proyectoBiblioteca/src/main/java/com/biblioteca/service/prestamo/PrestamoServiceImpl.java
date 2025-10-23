@@ -116,6 +116,7 @@ public class PrestamoServiceImpl implements IPrestamoService{
 	@Override
 	public void deleteLoan(Long id) {
 		prestamoRepository.deleteById(id);
+		System.out.println("Eliminado correctamente");
 	}
 
 
