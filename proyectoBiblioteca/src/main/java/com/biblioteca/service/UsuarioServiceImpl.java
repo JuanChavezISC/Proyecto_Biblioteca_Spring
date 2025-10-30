@@ -76,6 +76,7 @@ public class UsuarioServiceImpl implements IUsuarioService{
 	@Override
 	public void deleteUser(Long id) {
 		usuarioRepository.deleteById(id);
+		System.out.println("Usuario eliminado correctamente");
 		
 	}
 
