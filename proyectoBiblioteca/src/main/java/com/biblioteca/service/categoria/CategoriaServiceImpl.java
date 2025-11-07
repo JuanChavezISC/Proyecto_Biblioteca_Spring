@@ -72,6 +72,7 @@ public class CategoriaServiceImpl implements ICategoriaService {
 	@Override
 	public void deleteCategory(Long id) {
 		categoriaRepository.deleteById(id);
+		System.out.println("Categoria Eliminada");
 	}
 
 
