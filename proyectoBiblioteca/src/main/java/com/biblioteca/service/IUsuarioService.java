@@ -2,8 +2,6 @@ package com.biblioteca.service;
 
 import java.util.List;
 
-import com.biblioteca.dto.UsuarioDto;
-
 public interface IUsuarioService {
 	
 	List<UsuarioDto> findAllUsers();

@@ -2,8 +2,6 @@ package com.biblioteca.service.autor;
 
 import java.util.List;
 
-import com.biblioteca.dto.AutorDto;
-
 public interface IAutorService {
 
 	List<AutorDto> findAllAutors();

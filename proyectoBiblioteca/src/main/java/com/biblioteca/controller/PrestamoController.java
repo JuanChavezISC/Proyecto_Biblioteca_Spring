@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.biblioteca.dto.PrestamoDto;
 import com.biblioteca.service.prestamo.IPrestamoService;
 
 import jakarta.validation.Valid;

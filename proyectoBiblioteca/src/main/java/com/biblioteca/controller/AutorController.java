@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.biblioteca.dto.AutorDto;
 import com.biblioteca.service.autor.IAutorService;
 
 import jakarta.validation.Valid;

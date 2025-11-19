@@ -2,8 +2,6 @@ package com.biblioteca.service.libro;
 
 import java.util.List;
 
-import com.biblioteca.dto.LibroDto;
-
 public interface ILibroService {
 	
 	List<LibroDto> findAllBooks();

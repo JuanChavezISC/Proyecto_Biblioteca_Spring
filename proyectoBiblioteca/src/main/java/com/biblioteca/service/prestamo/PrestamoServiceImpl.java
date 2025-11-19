@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.biblioteca.dto.PrestamoDto;
 import com.biblioteca.entity.Libro;
 import com.biblioteca.entity.Prestamo;
 import com.biblioteca.entity.Usuario;

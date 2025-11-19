@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.biblioteca.dto.UsuarioDto;
 import com.biblioteca.entity.Usuario;
 import com.biblioteca.mapper.UsuarioMapper;
 import com.biblioteca.repository.IUsuarioRepository;

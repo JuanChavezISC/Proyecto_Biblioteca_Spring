@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.biblioteca.dto.LibroDto;
 import com.biblioteca.service.libro.ILibroService;
 
 import jakarta.validation.Valid;

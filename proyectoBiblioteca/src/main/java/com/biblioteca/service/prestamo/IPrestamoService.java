@@ -2,8 +2,6 @@ package com.biblioteca.service.prestamo;
 
 import java.util.List;
 
-import com.biblioteca.dto.PrestamoDto;
-
 public interface IPrestamoService {
 
 	List<PrestamoDto> findAllLoans();

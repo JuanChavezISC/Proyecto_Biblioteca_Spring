@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.biblioteca.dto.CategoriaDto;
 import com.biblioteca.entity.Categoria;
 import com.biblioteca.mapper.CategoriaMapper;
 import com.biblioteca.repository.ICategoriaRepository;

@@ -2,8 +2,6 @@ package com.biblioteca.service.categoria;
 
 import java.util.List;
 
-import com.biblioteca.dto.CategoriaDto;
-
 public interface ICategoriaService {
 	
 	List<CategoriaDto> findAllCategories();

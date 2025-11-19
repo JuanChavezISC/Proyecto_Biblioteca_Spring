@@ -3,9 +3,9 @@ package com.biblioteca.mapper;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.biblioteca.dto.PrestamoDto;
 import org.springframework.stereotype.Component;
 
-import com.biblioteca.dto.PrestamoDto;
 import com.biblioteca.entity.Libro;
 import com.biblioteca.entity.Prestamo;
 import com.biblioteca.entity.Usuario;
@@ -18,22 +18,16 @@ public class PrestamoMapper {
 		if (prestamo == null) {
 			return null;
 		}
-		
-		PrestamoDto dto = new PrestamoDto();
-		dto.setPrestamoId(prestamo.getPrestamoId());
-		dto.setFechaPrestamo(prestamo.getFechaPrestamo());
-		dto.setFechaDevolucion(prestamo.getFechaDevolucion());
-		dto.setDevuelto(prestamo.isDevuelto());
-		
-		//Relacion con Libro y Usuarios (solo Id's)
-		if (prestamo.getLibro() != null) {
-			dto.setLibroId(prestamo.getLibro().getLibroId());
-		}
-		
-		if (prestamo.getUsuario() != null) {
-			dto.setUsuarioId(prestamo.getUsuario().getUsuarioId());
-		}
-		return dto;
+
+		return new PrestamoDto(
+                prestamo.getPrestamoId(),
+                prestamo.getLibro() != null ? prestamo.getLibro().getLibroId() : null,
+                prestamo.getUsuario() != null ? prestamo.getUsuario().getUsuarioId() : null,
+                prestamo.getFechaPrestamo(),
+                prestamo.getFechaDevolucion(),
+                prestamo.isDevuelto()
+
+        );
 	}
 	
 	// Convertir de DTO a Entidad
@@ -43,22 +37,22 @@ public class PrestamoMapper {
 		}
 		
 		Prestamo prestamo = new Prestamo();
-		prestamo.setPrestamoId(dto.getPrestamoId());
-		prestamo.setFechaPrestamo(dto.getFechaPrestamo());
-		prestamo.setFechaDevolucion(dto.getFechaDevolucion());
-		prestamo.setDevuelto(dto.getDevuelto());
+		prestamo.setPrestamoId(dto.prestamoId());
+		prestamo.setFechaPrestamo(dto.fechaPrestamo());
+		prestamo.setFechaDevolucion(dto.fechaDevolucion());
+		prestamo.setDevuelto(dto.devuelto());
 		
-		// Relaciones: setear referencias con sus Id's (sin cargar todo el objeto)
+		// Relaciones: setear referencias con sus Id's (sin cargar tod o  el objeto)
 		
-		if (dto.getLibroId() != null) {
+		if (dto.libroId() != null) {
 			Libro libro = new Libro();
-			libro.setLibroId(dto.getLibroId());
+			libro.setLibroId(dto.libroId());
 			prestamo.setLibro(libro);
 		}
 		
-		if (dto.getUsuarioId() != null) {
+		if (dto.usuarioId() != null) {
 			Usuario usuario = new Usuario();
-			usuario.setUsuarioId(dto.getUsuarioId());
+			usuario.setUsuarioId(dto.usuarioId());
 			prestamo.setUsuario(usuario);
 		}
 		return prestamo;

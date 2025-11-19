@@ -3,9 +3,9 @@ package com.biblioteca.mapper;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.biblioteca.dto.CategoriaDto;
 import org.springframework.stereotype.Component;
 
-import com.biblioteca.dto.CategoriaDto;
 import com.biblioteca.entity.Categoria;
 
 @Component
@@ -17,14 +17,13 @@ public class CategoriaMapper {
 		if (categoria == null) {
 			return null;
 		}
-		
-		CategoriaDto dto = new CategoriaDto();
-		dto.setCategoriaId(categoria.getCategoriaId());
-		dto.setDescripcion(categoria.getDescripcion());
-		return dto;
+
+		return new CategoriaDto(
+                categoria.getCategoriaId(),
+                categoria.getDescripcion()
+        );
 	}
-	
-	
+
 	// Convertir de DTO a Entidad
 	public Categoria toEntity(CategoriaDto dto) {
 		if (dto == null) {
@@ -32,8 +31,8 @@ public class CategoriaMapper {
 		}
 		
 		Categoria categoria = new Categoria();
-		categoria.setCategoriaId(dto.getCategoriaId());
-		categoria.setDescripcion(dto.getDescripcion());
+		categoria.setCategoriaId(dto.categoriaId());
+		categoria.setDescripcion(dto.descripcion());
 		
 		return categoria;
 	}

@@ -3,9 +3,10 @@ package com.biblioteca.mapper;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.biblioteca.dto.PrestamoDto;
+import com.biblioteca.dto.UsuarioDto;
 import org.springframework.stereotype.Component;
 
-import com.biblioteca.dto.UsuarioDto;
 import com.biblioteca.entity.Usuario;
 
 @Component
@@ -25,18 +26,19 @@ public class UsuarioMapper {
 		if (usuario == null) {
 			return null;
 		}
-		
-		UsuarioDto dto = new UsuarioDto();
-		dto.setUsuarioId(usuario.getUsuarioId());
-		dto.setNombre(usuario.getNombre());
-		dto.setApellido(usuario.getApellido());
-		dto.setEmail(usuario.getEmail());
-		
+
+        List<PrestamoDto> prestamosDto = null;
+
 		if (usuario.getPrestamo() != null) {
-			dto.setPrestamo(prestamoMapper.toDtoList(usuario.getPrestamo()));
+			prestamosDto= prestamoMapper.toDtoList(usuario.getPrestamo());
 		}
 		
-		return dto;
+		return new UsuarioDto(
+                usuario.getUsuarioId(),
+                usuario.getNombre(),
+                usuario.getApellido(),
+                usuario.getEmail(),
+                prestamosDto);
 	}
 	
 	// Convertir de DTO a Entidad
@@ -46,13 +48,13 @@ public class UsuarioMapper {
 		}
 		
 		Usuario usuario = new Usuario();
-		usuario.setUsuarioId(dto.getUsuarioId());
-		usuario.setNombre(dto.getNombre());
-		usuario.setApellido(dto.getApellido());
-		usuario.setEmail(dto.getEmail());
+		usuario.setUsuarioId(dto.usuarioId());
+		usuario.setNombre(dto.nombre());
+		usuario.setApellido(dto.apellido());
+		usuario.setEmail(dto.email());
 		
-		if (dto.getPrestamo() != null) {
-			usuario.setPrestamo(prestamoMapper.toEntityList(dto.getPrestamo()));
+		if (dto.prestamos() != null) {
+			usuario.setPrestamo(prestamoMapper.toEntityList(dto.prestamos()));
 		}
 		return usuario;
 	}
