@@ -1,5 +1,7 @@
 package com.biblioteca.service;
 
+import com.biblioteca.dto.UsuarioDto;
+
 import java.util.List;
 
 public interface IUsuarioService {

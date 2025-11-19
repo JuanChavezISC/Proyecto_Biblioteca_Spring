@@ -1,5 +1,7 @@
 package com.biblioteca.service.autor;
 
+import com.biblioteca.dto.AutorDto;
+
 import java.util.List;
 
 public interface IAutorService {

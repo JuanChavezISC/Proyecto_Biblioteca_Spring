@@ -1,5 +1,7 @@
 package com.biblioteca.service.prestamo;
 
+import com.biblioteca.dto.PrestamoDto;
+
 import java.util.List;
 
 public interface IPrestamoService {

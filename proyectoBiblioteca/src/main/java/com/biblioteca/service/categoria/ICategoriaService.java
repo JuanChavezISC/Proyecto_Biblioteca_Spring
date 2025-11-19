@@ -1,5 +1,7 @@
 package com.biblioteca.service.categoria;
 
+import com.biblioteca.dto.CategoriaDto;
+
 import java.util.List;
 
 public interface ICategoriaService {

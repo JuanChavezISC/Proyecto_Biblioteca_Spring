@@ -1,5 +1,7 @@
 package com.biblioteca.service.libro;
 
+import com.biblioteca.dto.LibroDto;
+
 import java.util.List;
 
 public interface ILibroService {
