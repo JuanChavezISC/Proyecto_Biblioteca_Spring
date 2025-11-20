@@ -3,6 +3,7 @@ package com.biblioteca.controller;
 import java.net.URI;
 import java.util.List;
 
+import com.biblioteca.dto.UsuarioDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -50,7 +51,7 @@ public class UsuarioController {
 		
 		UsuarioDto creado = usuarioService.saveUser(usuario);
 		URI location = uriBuilder.path("api/usuarios/{id}")
-				.buildAndExpand(creado.getUsuarioId())
+				.buildAndExpand(creado.usuarioId())
 				.toUri();
 		return ResponseEntity.created(location).body(creado);
 	}

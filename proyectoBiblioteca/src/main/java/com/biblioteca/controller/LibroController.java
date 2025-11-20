@@ -3,6 +3,7 @@ package com.biblioteca.controller;
 import java.net.URI;
 import java.util.List;
 
+import com.biblioteca.dto.LibroDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -53,7 +54,7 @@ public class LibroController {
 		
 		LibroDto creado = libroService.saveBook(libro);
 		URI location = uriBuilder.path("api/libros/{id}")
-				.buildAndExpand(creado.getLibroId())
+				.buildAndExpand(creado.libroId())
 				.toUri();
 		return ResponseEntity.created(location).body(creado);
 	}

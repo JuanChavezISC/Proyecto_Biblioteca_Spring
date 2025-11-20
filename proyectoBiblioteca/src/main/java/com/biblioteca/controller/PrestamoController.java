@@ -3,6 +3,7 @@ package com.biblioteca.controller;
 import java.net.URI;
 import java.util.List;
 
+import com.biblioteca.dto.PrestamoDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -52,7 +53,7 @@ public class PrestamoController {
 														UriComponentsBuilder uriBuilder) {
 		PrestamoDto creado = prestamoService.saveLoan(prestamo);
 		URI location = uriBuilder.path("api/prestamos/{id}")
-				.buildAndExpand(creado.getPrestamoId())
+				.buildAndExpand(creado.prestamoId())
 				.toUri();
 		
 		return ResponseEntity.created(location).body(creado);

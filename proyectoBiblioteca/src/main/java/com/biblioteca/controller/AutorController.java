@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 
+import com.biblioteca.dto.AutorDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -52,7 +53,7 @@ public class AutorController {
 		
 		AutorDto creado = autorService.saveAutor(autor);
 		URI location = uriBuilder.path("/api/autores/{id}")
-				.buildAndExpand(creado.getAutorId())
+				.buildAndExpand(creado.autorId())
 				.toUri();
 		return ResponseEntity.created(location).body(creado);
 	}

@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 
+import com.biblioteca.dto.CategoriaDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -52,7 +53,7 @@ public class CategoriaController {
 		
 		CategoriaDto creado = categoriaService.saveCategory(categoria);
 		URI location = uriBuilder.path("/api/categorias/{id}")
-				.buildAndExpand(creado.getCategoriaId())
+				.buildAndExpand(creado.categoriaId())
 				.toUri();
 		return ResponseEntity.created(location).body(creado);
 	}
