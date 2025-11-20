@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import com.biblioteca.dto.LibroDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,10 +59,10 @@ public class LibroServiceImpl implements ILibroService {
 	@Override
 	public LibroDto saveBook(LibroDto libro) {
 		
-		Autor autorExistente = autorRepository.findById(libro.getAutorId())
+		Autor autorExistente = autorRepository.findById(libro.autorId())
 				.orElseThrow(() -> new RuntimeException("autor no encontrado, ingrese un id diferente"));
 		
-		Categoria categoriaExistente = categoriaRepository.findById(libro.getCategoriaId())
+		Categoria categoriaExistente = categoriaRepository.findById(libro.categoriaId())
 				.orElseThrow(() -> new RuntimeException("categoria no encontrada"));
 		
 		Libro libroEntity = libroMapper.toEntity(libro);
@@ -83,25 +84,25 @@ public class LibroServiceImpl implements ILibroService {
 		Libro libroDb = libroRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Libro no encontrado con id " + id));
 		
-		if (Objects.nonNull(libro.getTitulo()) && !"".equalsIgnoreCase(libro.getTitulo())) {
-			libroDb.setTitulo(libro.getTitulo());
+		if (Objects.nonNull(libro.titulo()) && !"".equalsIgnoreCase(libro.titulo())) {
+			libroDb.setTitulo(libro.titulo());
 		}
-		if (Objects.nonNull(libro.getIsbn()) && !"".equalsIgnoreCase(libro.getIsbn())) {
-			libroDb.setIsbn(libro.getIsbn());
+		if (Objects.nonNull(libro.isbn()) && !"".equalsIgnoreCase(libro.isbn())) {
+			libroDb.setIsbn(libro.isbn());
 		}
-		if (Objects.nonNull(libro.getFechaPublicacion())) {
-			libroDb.setFechaPublicacion(libro.getFechaPublicacion());
+		if (Objects.nonNull(libro.fechaPublicacion())) {
+			libroDb.setFechaPublicacion(libro.fechaPublicacion());
 		}
 		
 		// Actualizar Id
-		if (Objects.nonNull(libro.getAutorId())) {
-			Autor autorExistente = autorRepository.findById(libro.getAutorId())
-					.orElseThrow(() -> new RuntimeException("autor no encontrado con id " + libro.getAutorId()));
+		if (Objects.nonNull(libro.autorId())) {
+			Autor autorExistente = autorRepository.findById(libro.autorId())
+					.orElseThrow(() -> new RuntimeException("autor no encontrado con id " + libro.autorId()));
 			libroDb.setAutor(autorExistente);
 		}
-		if (Objects.nonNull(libro.getCategoriaId())) {
-			Categoria categoriaExistente = categoriaRepository.findById(libro.getCategoriaId())
-					.orElseThrow(() -> new RuntimeException("categoria no encontrada con id " + libro.getCategoriaId()));
+		if (Objects.nonNull(libro.categoriaId())) {
+			Categoria categoriaExistente = categoriaRepository.findById(libro.categoriaId())
+					.orElseThrow(() -> new RuntimeException("categoria no encontrada con id " + libro.categoriaId()));
 			libroDb.setCategoria(categoriaExistente);
 		}
 		

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import com.biblioteca.dto.UsuarioDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,14 +59,14 @@ public class UsuarioServiceImpl implements IUsuarioService{
 	public UsuarioDto updateUser(Long id, UsuarioDto usuario) {
 		
 		Usuario usuarioDb = usuarioRepository.findById(id).get();
-		if (Objects.nonNull(usuario.getNombre()) && !"".equalsIgnoreCase(usuario.getNombre())) {
-			usuarioDb.setNombre(usuario.getNombre());
+		if (Objects.nonNull(usuario.nombre()) && !"".equalsIgnoreCase(usuario.nombre())) {
+			usuarioDb.setNombre(usuario.nombre());
 		}
-		if (Objects.nonNull(usuario.getApellido()) && !"".equalsIgnoreCase(usuario.getApellido())) {
-			usuarioDb.setApellido(usuario.getApellido());
+		if (Objects.nonNull(usuario.apellido()) && !"".equalsIgnoreCase(usuario.apellido())) {
+			usuarioDb.setApellido(usuario.apellido());
 		}
-		if (Objects.nonNull(usuario.getEmail()) && !"".equalsIgnoreCase(usuario.getEmail())) {
-			usuarioDb.setEmail(usuario.getEmail());
+		if (Objects.nonNull(usuario.email()) && !"".equalsIgnoreCase(usuario.email())) {
+			usuarioDb.setEmail(usuario.email());
 		}
 		
 		Usuario actualizado = usuarioRepository.save(usuarioDb);

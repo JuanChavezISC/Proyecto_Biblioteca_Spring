@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import com.biblioteca.dto.AutorDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,9 +18,7 @@ public class AutorServiceImpl implements IAutorService{
     private final AutorMapper autorMapper;
 
 	private final IAutorRepository autorRepository;
-	
-	
-	
+
 	public AutorServiceImpl(IAutorRepository autorRepository, AutorMapper autorMapper) {
 		super();
 		this.autorRepository = autorRepository;
@@ -62,17 +61,17 @@ public class AutorServiceImpl implements IAutorService{
 		Autor autorDb = autorRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("autor no encontrado con id " + id ));
 		
-		if (Objects.nonNull(autor.getNombre()) && !"".equalsIgnoreCase(autor.getNombre())) {
-			autorDb.setNombre(autor.getNombre());
+		if (Objects.nonNull(autor.nombre()) && !"".equalsIgnoreCase(autor.nombre())) {
+			autorDb.setNombre(autor.nombre());
 		}
-		if (Objects.nonNull(autor.getApellido()) && !"".equalsIgnoreCase(autor.getApellido())) {
-			autorDb.setApellido(autor.getApellido());
+		if (Objects.nonNull(autor.apellido()) && !"".equalsIgnoreCase(autor.apellido())) {
+			autorDb.setApellido(autor.apellido());
 		}
-		if (Objects.nonNull(autor.getNacionalidad()) && !"".equalsIgnoreCase(autor.getNacionalidad())) {
-			autorDb.setNacionalidad(autor.getNacionalidad());
+		if (Objects.nonNull(autor.nacionalidad()) && !"".equalsIgnoreCase(autor.nacionalidad())) {
+			autorDb.setNacionalidad(autor.nacionalidad());
 		}
-		if (Objects.nonNull(autor.getFechaNacimiento())) {
-			autorDb.setFechaNacimiento(autor.getFechaNacimiento());
+		if (Objects.nonNull(autor.fechaNacimiento())) {
+			autorDb.setFechaNacimiento(autor.fechaNacimiento());
 		}
 		
 		Autor actualizado = autorRepository.save(autorDb);

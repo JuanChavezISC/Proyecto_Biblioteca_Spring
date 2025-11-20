@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import com.biblioteca.dto.CategoriaDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.biblioteca.entity.Categoria;
@@ -59,8 +60,8 @@ public class CategoriaServiceImpl implements ICategoriaService {
 	public CategoriaDto updateCategory(Long id, CategoriaDto categoria) {
 		Categoria categoriaDb = categoriaRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Categoria no encontrada con el id: " + id));
-		if (Objects.nonNull(categoria.getDescripcion()) && !"".equalsIgnoreCase(categoria.getDescripcion())) {
-			categoriaDb.setDescripcion(categoria.getDescripcion());
+		if (Objects.nonNull(categoria.descripcion()) && !"".equalsIgnoreCase(categoria.descripcion())) {
+			categoriaDb.setDescripcion(categoria.descripcion());
 		}
 		
 		Categoria actualizado = categoriaRepository.save(categoriaDb);

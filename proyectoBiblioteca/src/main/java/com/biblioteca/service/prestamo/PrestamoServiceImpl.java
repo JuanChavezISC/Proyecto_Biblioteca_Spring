@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import com.biblioteca.dto.PrestamoDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,10 +59,10 @@ public class PrestamoServiceImpl implements IPrestamoService{
 	@Override
 	public PrestamoDto saveLoan(PrestamoDto prestamo) {
 
-		Usuario usuarioExistente = usuarioRepository.findById(prestamo.getUsuarioId())
+		Usuario usuarioExistente = usuarioRepository.findById(prestamo.usuarioId())
 				.orElseThrow(() -> new RuntimeException("usuario no encontrado, ingrese un id diferente"));
 		
-		Libro libroExistente = libroRepository.findById(prestamo.getLibroId())
+		Libro libroExistente = libroRepository.findById(prestamo.libroId())
 				.orElseThrow(() -> new RuntimeException("libro no encontrado, ingrese un id diferente"));
 		
 		Prestamo prestamoEntity = prestamoMapper.toEntity(prestamo);
@@ -83,28 +84,28 @@ public class PrestamoServiceImpl implements IPrestamoService{
 		
 		Prestamo prestamoDb = prestamoRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Prestamo no encontrado con id " + id));
-		
-		if (Objects.nonNull(prestamo.getLibroId())) {
-			Libro libroExistente = libroRepository.findById(prestamo.getLibroId())
-					.orElseThrow(() -> new RuntimeException("libro no encontrado con id " + prestamo.getLibroId()));
+
+		if (Objects.nonNull(prestamo.libroId())) {
+			Libro libroExistente = libroRepository.findById(prestamo.libroId())
+					.orElseThrow(() -> new RuntimeException("libro no encontrado con id " + prestamo.libroId()));
 			prestamoDb.setLibro(libroExistente);
 		}
-		if (Objects.nonNull(prestamo.getUsuarioId())) {
-			Usuario usuarioExistente = usuarioRepository.findById(prestamo.getUsuarioId())
-					.orElseThrow(() -> new RuntimeException("usuario no encontrado con id " + prestamo.getUsuarioId()));
+		if (Objects.nonNull(prestamo.usuarioId())) {
+			Usuario usuarioExistente = usuarioRepository.findById(prestamo.usuarioId())
+					.orElseThrow(() -> new RuntimeException("usuario no encontrado con id " + prestamo.usuarioId()));
 			prestamoDb.setUsuario(usuarioExistente);
 		}
 		
-		if (Objects.nonNull(prestamo.getFechaPrestamo())) {
-			prestamoDb.setFechaPrestamo(prestamo.getFechaPrestamo());
+		if (Objects.nonNull(prestamo.fechaPrestamo())) {
+			prestamoDb.setFechaPrestamo(prestamo.fechaPrestamo());
 		}
 		
-		if (Objects.nonNull(prestamo.getFechaDevolucion())) {
-			prestamoDb.setFechaDevolucion(prestamo.getFechaDevolucion());
+		if (Objects.nonNull(prestamo.fechaDevolucion())) {
+			prestamoDb.setFechaDevolucion(prestamo.fechaDevolucion());
 		}
 
-		if (Objects.nonNull(prestamo.getDevuelto())) {
-			prestamoDb.setDevuelto(prestamo.getDevuelto());
+		if (Objects.nonNull(prestamo.devuelto())) {
+			prestamoDb.setDevuelto(prestamo.devuelto());
 		}
 		
 		Prestamo actualizado = prestamoRepository.save(prestamoDb);
