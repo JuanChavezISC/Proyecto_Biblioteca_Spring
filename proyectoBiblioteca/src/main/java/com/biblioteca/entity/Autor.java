@@ -3,17 +3,15 @@ package com.biblioteca.entity;
 import java.time.LocalDate;
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(
-		name = "tbl_autor"
+		name = "tbl_autor",
+        uniqueConstraints = @UniqueConstraint(
+                name = "autor_unique",
+                columnNames = {"nombre", "apellido", "nacionalidad", "fecha_nacimiento"}
+        )
 )
 public class Autor {
 
@@ -31,6 +29,7 @@ public class Autor {
 	private String nombre;
 	private String apellido;
 	private String nacionalidad;
+    @Column(name = "fecha_nacimiento")
 	private LocalDate fechaNacimiento;
 	
 	@OneToMany(mappedBy = "autor")
