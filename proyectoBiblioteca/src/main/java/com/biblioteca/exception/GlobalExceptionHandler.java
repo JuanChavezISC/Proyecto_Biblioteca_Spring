@@ -1,5 +1,7 @@
 package com.biblioteca.exception;
 
+import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,26 +20,35 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ApiError> handleValidationBody(MethodArgumentNotValidException ex
 			,HttpServletRequest req) {
-		
-		ApiError err = new ApiError(HttpStatus.BAD_REQUEST.value(),
-				"Validation Failed", "Hay errores de validacion",
-				req.getRequestURI());
-		
-		err.setFieldErrors(
-				ex.getBindingResult().getFieldErrors().stream()
-				.map(fe -> new ApiError.FieldErrorItem(fe.getField(),
-						fe.getDefaultMessage()))
-				.collect(Collectors.toList())
-				);
+
+        List<ApiError.FieldErrorItem> errores = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(fe -> new ApiError.FieldErrorItem(fe.getField(), fe.getDefaultMessage()))
+                .collect(Collectors.toList());
+
+		ApiError err = new ApiError(
+                OffsetDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+				"Validation Failed",
+                "Hay errores de validacion",
+                req.getRequestURI(),
+				errores);
+        
 		return ResponseEntity.badRequest().body(err);
 	}
 	
 	@ExceptionHandler(ConstraintViolationException.class)
 	public ResponseEntity<ApiError> handleValidationParams(ConstraintViolationException ex
 			,HttpServletRequest req) {
-		
-		ApiError err = new ApiError(HttpStatus.BAD_REQUEST.value(),
-				"Constraint Violation", ex.getMessage(), req.getRequestURI());
+
+		ApiError err = new ApiError(
+                OffsetDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Constraint Violation",
+                ex.getMessage(),
+                req.getRequestURI(),
+                null);
 		return ResponseEntity.badRequest().body(err);
 	}
 	
@@ -45,8 +56,13 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ApiError> handleNotFound(NotFoundException ex
 			,HttpServletRequest req) {
 		
-		ApiError err = new ApiError(HttpStatus.NOT_FOUND.value(),
-				"Not Found", ex.getMessage(), req.getRequestURI());
+		ApiError err = new ApiError(
+                OffsetDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),
+				"Not Found",
+                ex.getMessage(),
+                req.getRequestURI(),
+                null);
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
 	}
 
@@ -54,10 +70,13 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ApiError> handleIntegrity(DataIntegrityViolationException ex
 			,HttpServletRequest req) {
 		
-		ApiError err = new ApiError(HttpStatus.CONFLICT.value(),
+		ApiError err = new ApiError(
+                OffsetDateTime.now(),
+                HttpStatus.CONFLICT.value(),
 				"Data Integrity Violation",
 				"No se pudo completar la operacion por restricciones de datos",
-				req.getRequestURI());
+				req.getRequestURI(),
+                null);
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(err);
 	}
 	
@@ -65,8 +84,13 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ApiError> handleGeneral(Exception ex
 			,HttpServletRequest req) {
 		
-		ApiError err = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR.value(),
-				"Internal Server Error", ex.getMessage(), req.getRequestURI());
+		ApiError err = new ApiError(
+                OffsetDateTime.now(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+				"Internal Server Error",
+                ex.getMessage(),
+                req.getRequestURI(),
+                null);
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(err);
 	}
 	
