@@ -1,12 +1,16 @@
 package com.biblioteca.exception;
 
+import java.nio.file.AccessDeniedException;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -16,6 +20,18 @@ import jakarta.validation.ConstraintViolationException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    // ------------------ Seguridad ------------------
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<?> handleBadCredentials(BadCredentialsException ex) {
+        return build(HttpStatus.UNAUTHORIZED, "Credenciales inválidas", ex.getMessage());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<?> handleAccessDenied(AccessDeniedException ex) {
+        return build(HttpStatus.FORBIDDEN, "Acceso denegado", "No tienes permisos para este recurso");
+    }
+        // ------------------ Validaciones ------------------
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ApiError> handleValidationBody(MethodArgumentNotValidException ex
@@ -66,6 +82,7 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
 	}
 
+    // ------------------ Integridad ------------------
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	public ResponseEntity<ApiError> handleIntegrity(DataIntegrityViolationException ex
 			,HttpServletRequest req) {
@@ -79,6 +96,8 @@ public class GlobalExceptionHandler {
                 null);
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(err);
 	}
+
+    // ------------------ Errores Generales ------------------
 	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ApiError> handleGeneral(Exception ex
@@ -93,5 +112,12 @@ public class GlobalExceptionHandler {
                 null);
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(err);
 	}
+
+    private ResponseEntity<Map<String, Object>> build(HttpStatus status, String error, String message) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("error", error);
+        body.put("message", message);
+        return ResponseEntity.status(status).body(body);
+    }
 	
 }
