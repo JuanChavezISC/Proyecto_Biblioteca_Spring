@@ -6,6 +6,13 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.biblioteca.dto.UsuarioDto;
+import com.biblioteca.security.dto.RequestsResponses;
+import com.biblioteca.security.role.Role;
+import com.biblioteca.security.role.RoleRepository;
+import com.biblioteca.security.service.UserAccountService;
+import com.biblioteca.security.user.UserAccount;
+import com.biblioteca.security.user.UserAccountRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,16 +22,23 @@ import com.biblioteca.repository.IUsuarioRepository;
 
 @Service
 public class UsuarioServiceImpl implements IUsuarioService{
-	
+
 	private final UsuarioMapper usuarioMapper;
-	
+	private final UserAccountRepository userAccountRepository;
+    private final RoleRepository roleRepository;
 	private final IUsuarioRepository usuarioRepository;
+    private final UserAccountService userAccountService;
+    private final PasswordEncoder encoder;
 	
-	public UsuarioServiceImpl(UsuarioMapper usuarioMapper, IUsuarioRepository usuarioRepository) {
+	public UsuarioServiceImpl(UsuarioMapper usuarioMapper, UserAccountRepository userAccountRepository, RoleRepository roleRepository, IUsuarioRepository usuarioRepository, UserAccountService userAccountService, PasswordEncoder encoder) {
 		super();
 		this.usuarioMapper = usuarioMapper;
-		this.usuarioRepository = usuarioRepository;
-	}
+        this.userAccountRepository = userAccountRepository;
+        this.roleRepository = roleRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.userAccountService = userAccountService;
+        this.encoder = encoder;
+    }
 
 	@Override
 	@Transactional(readOnly = true)
@@ -48,12 +62,27 @@ public class UsuarioServiceImpl implements IUsuarioService{
 	// Guardar todos los usuarios
 	@Override
 	public UsuarioDto saveUser(UsuarioDto usuario) {
+
+        // 1. Crear Usuario (sinUserAccount)
 		Usuario usuarioEntity = usuarioMapper.toEntity(usuario);
 
         usuarioEntity.setFechaRegistro(LocalDateTime.now());
         usuarioEntity.setActivo(true);
 		
 		Usuario guardado = usuarioRepository.save(usuarioEntity);
+
+        // 2. Crear UserAccount llamando al servicio de seguridad
+        RequestsResponses.RegisterRequest request = new RequestsResponses.RegisterRequest(
+                usuario.nombre(),
+                usuario.email(),
+                "123456"
+        );
+
+        UserAccount cuenta = userAccountService.register(request, usuarioEntity);
+
+        // 3. Asociar ambos lados
+        usuarioEntity.setUserAccount(cuenta);
+        usuarioRepository.save(usuarioEntity);
 		
 		return usuarioMapper.toDto(guardado);
 	}
