@@ -3,16 +3,9 @@ package com.biblioteca.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.biblioteca.security.user.UserAccount;
+import jakarta.persistence.*;
 
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import lombok.*;
 
 @Entity
@@ -62,7 +55,9 @@ public class Usuario {
 			mappedBy = "usuario"
 			)
 	private List<Prestamo> prestamo;
-	
+
+    @OneToOne(mappedBy = "usuario")
+    private UserAccount userAccount;
 	// Constructores
 
 

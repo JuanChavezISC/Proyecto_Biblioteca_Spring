@@ -1,5 +1,6 @@
 package com.biblioteca.security.user;
 
+import com.biblioteca.entity.Usuario;
 import com.biblioteca.security.role.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -25,4 +26,8 @@ public class UserAccount {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+    @OneToOne
+    @JoinColumn(name = "usuario_id", unique = true)
+    private Usuario usuario;
 }
