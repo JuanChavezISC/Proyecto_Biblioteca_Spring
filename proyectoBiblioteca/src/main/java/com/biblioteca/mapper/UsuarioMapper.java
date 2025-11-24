@@ -38,6 +38,11 @@ public class UsuarioMapper {
                 usuario.getNombre(),
                 usuario.getApellido(),
                 usuario.getEmail(),
+                usuario.getTelefono(),
+                usuario.getDireccion(),
+                usuario.getCiudad(),
+                usuario.getFechaRegistro(),
+                usuario.getActivo(),
                 prestamosDto);
 	}
 	
@@ -52,6 +57,9 @@ public class UsuarioMapper {
 		usuario.setNombre(dto.nombre());
 		usuario.setApellido(dto.apellido());
 		usuario.setEmail(dto.email());
+        usuario.setTelefono(dto.telefono());
+        usuario.setDireccion(dto.direccion());
+        usuario.setCiudad(dto.ciudad());
 		
 		if (dto.prestamos() != null) {
 			usuario.setPrestamo(prestamoMapper.toEntityList(dto.prestamos()));

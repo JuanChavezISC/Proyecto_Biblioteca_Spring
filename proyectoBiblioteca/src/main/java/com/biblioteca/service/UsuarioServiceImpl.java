@@ -1,5 +1,6 @@
 package com.biblioteca.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -48,6 +49,9 @@ public class UsuarioServiceImpl implements IUsuarioService{
 	@Override
 	public UsuarioDto saveUser(UsuarioDto usuario) {
 		Usuario usuarioEntity = usuarioMapper.toEntity(usuario);
+
+        usuarioEntity.setFechaRegistro(LocalDateTime.now());
+        usuarioEntity.setActivo(true);
 		
 		Usuario guardado = usuarioRepository.save(usuarioEntity);
 		
@@ -68,7 +72,15 @@ public class UsuarioServiceImpl implements IUsuarioService{
 		if (Objects.nonNull(usuario.email()) && !"".equalsIgnoreCase(usuario.email())) {
 			usuarioDb.setEmail(usuario.email());
 		}
-		
+        if (Objects.nonNull(usuario.telefono()) && !"".equalsIgnoreCase(usuario.telefono())) {
+            usuarioDb.setTelefono(usuario.telefono());
+        }
+        if (Objects.nonNull(usuario.direccion()) && !"".equalsIgnoreCase(usuario.direccion())) {
+            usuarioDb.setDireccion(usuario.direccion());
+        }
+        if (Objects.nonNull(usuario.ciudad()) && !"".equalsIgnoreCase(usuario.ciudad())) {
+            usuarioDb.setCiudad(usuario.ciudad());
+        }
 		Usuario actualizado = usuarioRepository.save(usuarioDb);
 		return usuarioMapper.toDto(actualizado);
 	}
@@ -76,9 +88,7 @@ public class UsuarioServiceImpl implements IUsuarioService{
 	@Override
 	public void deleteUser(Long id) {
 		usuarioRepository.deleteById(id);
-		
 	}
-
 
 	
 }

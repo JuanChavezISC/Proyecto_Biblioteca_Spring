@@ -1,5 +1,6 @@
 package com.biblioteca.entity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -12,6 +13,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import lombok.*;
 
 @Entity
 @Table(
@@ -21,6 +23,11 @@ import jakarta.persistence.UniqueConstraint;
 				columnNames = "email_address"
 		)
 )
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Usuario {
 
 	@Id
@@ -42,16 +49,21 @@ public class Usuario {
 			nullable = false
 	)
 	private String email;
-	
+
+    private String telefono;
+    private String direccion;
+    private String ciudad;
+
+    private LocalDateTime fechaRegistro = LocalDateTime.now(); // Se llena automaticamente
+
+    private Boolean activo = true;
+
 	@OneToMany(
 			mappedBy = "usuario"
 			)
 	private List<Prestamo> prestamo;
 	
 	// Constructores
-	public Usuario() {
-		super();
-	}
 
 
 	public List<Prestamo> getPrestamo() {
@@ -59,66 +71,4 @@ public class Usuario {
 	}
 
 
-	public void setPrestamo(List<Prestamo> prestamo) {
-		this.prestamo = prestamo;
-	}
-
-
-	public Usuario(String nombre, String apellido, String email) {
-		super();
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.email = email;
-	}
-
-
-	// Getters & Setters
-	public Long getUsuarioId() {
-		return usuarioId;
-	}
-
-
-	public void setUsuarioId(Long usuarioId) {
-		this.usuarioId = usuarioId;
-	}
-
-
-	public String getNombre() {
-		return nombre;
-	}
-
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-
-	public String getApellido() {
-		return apellido;
-	}
-
-
-	public void setApellido(String apellido) {
-		this.apellido = apellido;
-	}
-
-
-	public String getEmail() {
-		return email;
-	}
-
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-
-	@Override
-	public String toString() {
-		return "Usuario [usuarioId=" + usuarioId + ", nombre=" + nombre + ", apellido=" + apellido + ", email=" + email
-				+ "]";
-	}
-	
-	
-	
 }
