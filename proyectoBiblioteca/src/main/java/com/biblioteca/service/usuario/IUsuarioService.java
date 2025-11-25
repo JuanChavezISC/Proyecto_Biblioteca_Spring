@@ -1,4 +1,4 @@
-package com.biblioteca.service;
+package com.biblioteca.service.usuario;
 
 import com.biblioteca.auth.dto.RegistroUsuarioDto;
 import com.biblioteca.dto.UsuarioDto;

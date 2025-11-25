@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.biblioteca.service.IUsuarioService;
+import com.biblioteca.service.usuario.IUsuarioService;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;

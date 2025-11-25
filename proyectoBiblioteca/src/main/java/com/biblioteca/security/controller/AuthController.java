@@ -5,7 +5,7 @@ import com.biblioteca.dto.UsuarioDto;
 import com.biblioteca.security.dto.RequestsResponses;
 import com.biblioteca.security.service.AuthService;
 import com.biblioteca.security.service.UserAccountService;
-import com.biblioteca.service.IUsuarioService;
+import com.biblioteca.service.usuario.IUsuarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

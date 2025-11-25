@@ -1,4 +1,4 @@
-package com.biblioteca.service;
+package com.biblioteca.service.usuario;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -7,8 +7,6 @@ import java.util.stream.Collectors;
 
 import com.biblioteca.auth.dto.RegistroUsuarioDto;
 import com.biblioteca.dto.UsuarioDto;
-import com.biblioteca.security.dto.RequestsResponses;
-import com.biblioteca.security.role.Role;
 import com.biblioteca.security.role.RoleRepository;
 import com.biblioteca.security.service.UserAccountService;
 import com.biblioteca.security.user.UserAccount;
@@ -22,7 +20,7 @@ import com.biblioteca.mapper.UsuarioMapper;
 import com.biblioteca.repository.IUsuarioRepository;
 
 @Service
-public class UsuarioServiceImpl implements IUsuarioService{
+public class UsuarioServiceImpl implements IUsuarioService {
 
 	private final UsuarioMapper usuarioMapper;
 	private final UserAccountRepository userAccountRepository;
