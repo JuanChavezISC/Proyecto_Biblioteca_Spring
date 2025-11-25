@@ -3,6 +3,7 @@ package com.biblioteca.controller;
 import java.net.URI;
 import java.util.List;
 
+import com.biblioteca.auth.dto.RegistroUsuarioDto;
 import com.biblioteca.dto.UsuarioDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -46,10 +47,11 @@ public class UsuarioController {
 	}
 	
 	@PostMapping("/usuarios")
-	public ResponseEntity<UsuarioDto> saveUser(@Valid @RequestBody UsuarioDto usuario,
+	public ResponseEntity<UsuarioDto> saveUser(@Valid @RequestBody RegistroUsuarioDto usuario,
 													UriComponentsBuilder uriBuilder) {
 		
 		UsuarioDto creado = usuarioService.saveUser(usuario);
+
 		URI location = uriBuilder.path("api/usuarios/{id}")
 				.buildAndExpand(creado.usuarioId())
 				.toUri();
@@ -57,7 +59,7 @@ public class UsuarioController {
 	}
 	
 	@PutMapping("/usuarios/{id}") //PathVariable recibe variable en URL
-	public ResponseEntity<UsuarioDto> updateUser(@PathVariable Long id, 
+	public ResponseEntity<UsuarioDto> updateUser(@PathVariable Long id,
 													@Valid @RequestBody UsuarioDto usuario) {
 		UsuarioDto actualizado = usuarioService.updateUser(id, usuario);
 		return ResponseEntity.ok(actualizado);

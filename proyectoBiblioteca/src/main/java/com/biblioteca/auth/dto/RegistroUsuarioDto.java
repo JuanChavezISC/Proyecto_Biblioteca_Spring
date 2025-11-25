@@ -22,6 +22,9 @@ public record RegistroUsuarioDto(
         @NotBlank(message = "La dirección es obligatoria")
         String direccion,
 
+        @NotBlank(message = "la ciudad es obligatoria")
+        String ciudad,
+
         @NotBlank(message = "El username es obligatorio")
         @Size(min = 4, max = 20, message = "El username debe tener entre 4 y 20 caracteres")
         String username,

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import com.biblioteca.auth.dto.RegistroUsuarioDto;
 import com.biblioteca.dto.UsuarioDto;
 import com.biblioteca.security.dto.RequestsResponses;
 import com.biblioteca.security.role.Role;
@@ -48,7 +49,7 @@ public class UsuarioServiceImpl implements IUsuarioService{
 		
 		return usuarioMapper.toDto(user);
 	}
-	
+
 	// Encontrar Todos los Usuarios
 	@Override
 	@Transactional(readOnly = true)
@@ -61,28 +62,21 @@ public class UsuarioServiceImpl implements IUsuarioService{
 
 	// Guardar todos los usuarios
 	@Override
-	public UsuarioDto saveUser(UsuarioDto usuario) {
+	public UsuarioDto saveUser(RegistroUsuarioDto usuario) {
 
         // 1. Crear Usuario (sinUserAccount)
 		Usuario usuarioEntity = usuarioMapper.toEntity(usuario);
-
         usuarioEntity.setFechaRegistro(LocalDateTime.now());
         usuarioEntity.setActivo(true);
 		
 		Usuario guardado = usuarioRepository.save(usuarioEntity);
 
         // 2. Crear UserAccount llamando al servicio de seguridad
-        RequestsResponses.RegisterRequest request = new RequestsResponses.RegisterRequest(
-                usuario.nombre(),
-                usuario.email(),
-                "123456"
-        );
-
-        UserAccount cuenta = userAccountService.register(request, usuarioEntity);
+        UserAccount cuenta = userAccountService.register(usuario, guardado);
 
         // 3. Asociar ambos lados
-        usuarioEntity.setUserAccount(cuenta);
-        usuarioRepository.save(usuarioEntity);
+        guardado.setUserAccount(cuenta);
+        usuarioRepository.save(guardado);
 		
 		return usuarioMapper.toDto(guardado);
 	}

@@ -1,5 +1,6 @@
 package com.biblioteca.security.service;
 
+import com.biblioteca.auth.dto.RegistroUsuarioDto;
 import com.biblioteca.entity.Usuario;
 import com.biblioteca.security.dto.RequestsResponses;
 import com.biblioteca.security.role.Role;
@@ -17,10 +18,13 @@ public class UserAccountService {
     private final RoleRepository roleRepo;
     private final PasswordEncoder encoder;
 
-    public UserAccount register(RequestsResponses.RegisterRequest dto, Usuario usuario){
+    public UserAccount register(RegistroUsuarioDto dto, Usuario usuario){
+
+        // Validar Username unico
         userRepo.findByUsername(dto.username()).ifPresent(u -> {
             throw new IllegalArgumentException("Username en uso");
         });
+        // Validar email unico
         userRepo.findByEmail(dto.email()).ifPresent(u -> {
             throw new IllegalArgumentException("Email en uso");
         });

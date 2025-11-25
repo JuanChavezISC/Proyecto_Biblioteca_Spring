@@ -3,6 +3,7 @@ package com.biblioteca.mapper;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.biblioteca.auth.dto.RegistroUsuarioDto;
 import com.biblioteca.dto.PrestamoDto;
 import com.biblioteca.dto.UsuarioDto;
 import org.springframework.stereotype.Component;
@@ -66,6 +67,23 @@ public class UsuarioMapper {
 		}
 		return usuario;
 	}
+
+    // Convertir de DTO a Entidad
+    public Usuario toEntity(RegistroUsuarioDto dto) {
+        if (dto == null) {
+            return null;
+        }
+
+        Usuario usuario = new Usuario();
+        usuario.setNombre(dto.nombre());
+        usuario.setApellido(dto.apellido());
+        usuario.setEmail(dto.email());
+        usuario.setTelefono(dto.telefono());
+        usuario.setDireccion(dto.direccion());
+        usuario.setCiudad(dto.ciudad());
+
+        return usuario;
+    }
 	
 	// Metodos auxiliares para listas
 	
