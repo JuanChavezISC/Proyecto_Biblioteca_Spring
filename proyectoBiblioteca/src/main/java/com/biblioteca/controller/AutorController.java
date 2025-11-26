@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.biblioteca.dto.AutorDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,16 +38,22 @@ public class AutorController {
 		this.autorService = autorService;
 	}
 
+    // Pueden acceder todos los usuarios autenticados
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@GetMapping("/autores")
 	public ResponseEntity<List<AutorDto>> autors() {
 		return ResponseEntity.ok(autorService.findAllAutors());		
 	}
-	
+
+    // Pueden acceder todos los usuarios autenticados
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@GetMapping("/autores/{id}")
 	public ResponseEntity<AutorDto> getAutorById(@PathVariable @Min(1) Long id) {
 		return ResponseEntity.ok(autorService.getAutorById(id));
 	}
-	
+
+	// Solo ADMIN puede crear autores
+    @PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/autores")
 	public ResponseEntity<AutorDto>saveAutor(@Valid  @RequestBody AutorDto autor,
 										UriComponentsBuilder uriBuilder) {
@@ -57,14 +64,18 @@ public class AutorController {
 				.toUri();
 		return ResponseEntity.created(location).body(creado);
 	}
-	
+
+	// Solo ADMIN puede actualizar autores
+    @PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/autores/{id}")
 	public ResponseEntity<AutorDto> updateAutor(@PathVariable @Min(1) Long id,
 													@Valid @RequestBody AutorDto autor) {
 		AutorDto actualizado = autorService.updateAutor(id, autor); 
 		return ResponseEntity.ok(actualizado);
 	}
-	
+
+
+    @PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/autores/{id}")
 	public ResponseEntity<Void> deleteAutor(@PathVariable Long id) {
 		autorService.deleteAutor(id);
