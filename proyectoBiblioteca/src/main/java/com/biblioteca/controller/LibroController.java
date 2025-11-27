@@ -6,6 +6,7 @@ import java.util.List;
 import com.biblioteca.dto.LibroDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,17 +38,23 @@ public class LibroController {
 		this.libroService = libroService;
 	}
 
+    // Pueden acceder todos los usuarios autenticados
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'LIBRARIAN')")
 	@GetMapping("/libros")
 	@ResponseStatus (HttpStatus.OK)
 	public ResponseEntity<List<LibroDto>> libros() {
 		return ResponseEntity.ok(libroService.findAllBooks());
 	}
-	
+
+    // Pueden acceder todos los usuarios autenticados
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'LIBRARIAN')")
 	@GetMapping("/libros/{id}")
 	public ResponseEntity<LibroDto> getBookById(@PathVariable @Min(1) Long id) {
 		return ResponseEntity.ok(libroService.findBookById(id));
 	}
-	
+
+    // ADMIN y LIBRARIAN puede crear libros
+    @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN')")
 	@PostMapping("/libros")
 	public ResponseEntity<LibroDto> saveBook(@Valid @RequestBody LibroDto libro,
 													UriComponentsBuilder uriBuilder) {
@@ -58,7 +65,9 @@ public class LibroController {
 				.toUri();
 		return ResponseEntity.created(location).body(creado);
 	}
-	
+
+    // ADMIN y LIBRARIAN puede actualizar libros
+    @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN')")
 	@PutMapping("/libros/{id}")
 	public ResponseEntity<LibroDto> updateBook(@PathVariable Long id,
 												@Valid @RequestBody LibroDto libro) {
@@ -66,7 +75,9 @@ public class LibroController {
 		LibroDto actualizado = libroService.updateBook(id, libro);
 		return ResponseEntity.ok(actualizado);
 	}
-	
+
+    // Solo ADMIN
+    @PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/libros/{id}")
 	public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
 		libroService.deleteBook(id);
