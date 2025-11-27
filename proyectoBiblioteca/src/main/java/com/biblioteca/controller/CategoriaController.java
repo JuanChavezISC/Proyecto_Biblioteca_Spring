@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.biblioteca.dto.CategoriaDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,17 +37,22 @@ public class CategoriaController {
 		this.categoriaService = categoriaService;
 	}
 
+    // Pueden acceder todos los usuarios autenticados
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'LIBRARIAN')")
 	@GetMapping("/categorias")
 	public ResponseEntity<List<CategoriaDto>> categories() {
 		return ResponseEntity.ok(categoriaService.findAllCategories());
 	}
-	
+
+    // Pueden acceder todos los usuarios autenticados
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'LIBRARIAN')")
 	@GetMapping("/categorias/{id}")
 	public ResponseEntity<CategoriaDto> getCategoriaById(@PathVariable @Min(1) Long id) {
 		return ResponseEntity.ok(categoriaService.findCategoriaById(id));
 	}
-	
-	
+
+    // ADMIN y LIBRARIAN puede crear categorias
+    @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN')")
 	@PostMapping("/categorias")
 	public ResponseEntity<CategoriaDto> saveCategory(@Valid @RequestBody CategoriaDto categoria, 
 																UriComponentsBuilder uriBuilder) {
@@ -57,14 +63,17 @@ public class CategoriaController {
 				.toUri();
 		return ResponseEntity.created(location).body(creado);
 	}
-	
+    // ADMIN y LIBRARIAN puede actualizar categorias
+    @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN')")
 	@PutMapping("/categorias/{id}")
 	public ResponseEntity<CategoriaDto> updateCategory(@PathVariable @Min(1) Long id, 
 														@Valid	@RequestBody CategoriaDto categoria) {
 		CategoriaDto actualizado = categoriaService.updateCategory(id, categoria);
 		return ResponseEntity.ok(actualizado);
 	}
-	
+
+    // Solo ADMIN
+    @PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/categorias/{id}")
 	public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
 		categoriaService.deleteCategory(id);
