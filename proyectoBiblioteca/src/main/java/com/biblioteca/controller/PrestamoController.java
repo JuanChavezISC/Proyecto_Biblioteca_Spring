@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.biblioteca.dto.PrestamoDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,16 +39,22 @@ public class PrestamoController {
 		this.prestamoService = prestamoService;
 	}
 
+    // Pueden acceder todos los usuarios autenticados
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'LIBRARIAN')")
 	@GetMapping("/prestamos")
 	public ResponseEntity<List<PrestamoDto>> prestamos() {
 		return ResponseEntity.ok(prestamoService.findAllLoans());
 	}
-	
+
+    // Pueden acceder todos los usuarios autenticados
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'LIBRARIAN')")
 	@GetMapping("prestamos/{id}")
 	public ResponseEntity<PrestamoDto> findLoanById(@PathVariable @Min(1) Long id) {
 		return ResponseEntity.ok(prestamoService.findLoanById(id));
 	}
-	
+
+    // ADMIN y LIBRARIAN puede crear prestamos
+    @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN')")
 	@PostMapping("/prestamos")
 	public ResponseEntity<PrestamoDto> saveLoan(@Valid @RequestBody PrestamoDto prestamo,
 														UriComponentsBuilder uriBuilder) {
@@ -58,7 +65,9 @@ public class PrestamoController {
 		
 		return ResponseEntity.created(location).body(creado);
 	}
-	
+
+    // ADMIN y LIBRARIAN puede modificar prestamos
+    @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN')")
 	@PutMapping("prestamos/{id}")
 	public ResponseEntity<PrestamoDto> updateLoan(@PathVariable Long id,
 									@Valid @RequestBody PrestamoDto prestamo) {
@@ -67,7 +76,9 @@ public class PrestamoController {
 		
 		return ResponseEntity.ok(actualizado);
 	}
-	
+
+    // Solo ADMIN
+    @PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/prestamos/{id}")
 	public ResponseEntity<Void> deleteLoan(@PathVariable Long id) {
 		prestamoService.deleteLoan(id);
