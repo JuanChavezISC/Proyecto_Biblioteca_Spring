@@ -39,21 +39,21 @@ public class AutorController {
 	}
 
     // Pueden acceder todos los usuarios autenticados
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'LIBRARIAN')")
 	@GetMapping("/autores")
 	public ResponseEntity<List<AutorDto>> autors() {
 		return ResponseEntity.ok(autorService.findAllAutors());		
 	}
 
     // Pueden acceder todos los usuarios autenticados
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'LIBRARIAN')")
 	@GetMapping("/autores/{id}")
 	public ResponseEntity<AutorDto> getAutorById(@PathVariable @Min(1) Long id) {
 		return ResponseEntity.ok(autorService.getAutorById(id));
 	}
 
-	// Solo ADMIN puede crear autores
-    @PreAuthorize("hasRole('ADMIN')")
+	// ADMIN y LIBRARIAN puede crear autores
+    @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN')")
 	@PostMapping("/autores")
 	public ResponseEntity<AutorDto>saveAutor(@Valid  @RequestBody AutorDto autor,
 										UriComponentsBuilder uriBuilder) {
@@ -65,8 +65,8 @@ public class AutorController {
 		return ResponseEntity.created(location).body(creado);
 	}
 
-	// Solo ADMIN puede actualizar autores
-    @PreAuthorize("hasRole('ADMIN')")
+	// ADMIN y LIBRARIAN puede actualizar autores
+    @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN')")
 	@PutMapping("/autores/{id}")
 	public ResponseEntity<AutorDto> updateAutor(@PathVariable @Min(1) Long id,
 													@Valid @RequestBody AutorDto autor) {
@@ -74,7 +74,7 @@ public class AutorController {
 		return ResponseEntity.ok(actualizado);
 	}
 
-
+    // Solo ADMIN
     @PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/autores/{id}")
 	public ResponseEntity<Void> deleteAutor(@PathVariable Long id) {

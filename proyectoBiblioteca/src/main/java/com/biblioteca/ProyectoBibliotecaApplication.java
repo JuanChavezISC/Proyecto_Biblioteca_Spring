@@ -9,6 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Set;
+
 @SpringBootApplication
 public class ProyectoBibliotecaApplication {
 
@@ -20,10 +22,56 @@ public class ProyectoBibliotecaApplication {
     @Bean
     CommandLineRunner seed(RoleRepository roleRepo, UserAccountRepository userRepo, PasswordEncoder encoder) {
         return args -> {
-            var rUser  = roleRepo.findByName("ROLE_USER").orElseGet(() -> roleRepo.save(Role.builder().name("ROLE_USER").description("Usuario").build()));
-            var rAdmin = roleRepo.findByName("ROLE_ADMIN").orElseGet(() -> roleRepo.save(Role.builder().name("ROLE_ADMIN").description("Administrador").build()));
+            var rUser  = roleRepo.findByName("ROLE_USER")
+                    .orElseGet(() -> roleRepo.save(Role.builder().name("ROLE_USER").description("Usuario").build()));
+
+            var rAdmin = roleRepo.findByName("ROLE_ADMIN")
+                    .orElseGet(() -> roleRepo.save(Role.builder().name("ROLE_ADMIN").description("Administrador").build()));
+
+            var rLibrarian = roleRepo.findByName("ROLE_LIBRARIAN")
+                    .orElseGet(() -> roleRepo.save(Role.builder().name("ROLE_LIBRARIAN").description("Bibliotecario").build()));
+
             if (userRepo.findByUsername("admin").isEmpty()) { /* crear admin con ambos roles */ }
             if (userRepo.findByUsername("user").isEmpty())  { /* crear user con ROLE_USER */ }
+
+            // Crear ADMIN inicial
+            if (userRepo.findByUsername("admin").isEmpty()) {
+                var admin = com.biblioteca.security.user.UserAccount.builder()
+                        .username("admin")
+                        .email("admin@mail.com")
+                        .passwordHash(encoder.encode("admin123"))
+                        .roles(Set.of(rAdmin, rLibrarian)) // O solo rAdmin si prefieres
+                        .build();
+
+                userRepo.save(admin);
+                System.out.println("ADMIN creado correctamente");
+            }
+
+            // Crear usuario normal
+            if (userRepo.findByUsername("user").isEmpty()) {
+                var user = com.biblioteca.security.user.UserAccount.builder()
+                        .username("user")
+                        .email("user@mail.com")
+                        .passwordHash(encoder.encode("user123"))
+                        .roles(Set.of(rUser))
+                        .build();
+
+                userRepo.save(user);
+                System.out.println("USER creado correctamente");
+            }
+
+            // Crear BIBLIOTECARIO
+            if (userRepo.findByUsername("bibliotecario").isEmpty()) {
+                var librarian = com.biblioteca.security.user.UserAccount.builder()
+                        .username("bibliotecario")
+                        .email("biblio@mail.com")
+                        .passwordHash(encoder.encode("biblio123"))
+                        .roles(Set.of(rLibrarian))
+                        .build();
+
+                userRepo.save(librarian);
+                System.out.println("BIBLIOTECARIO creado correctamente");
+            }
         };
     }
 }
