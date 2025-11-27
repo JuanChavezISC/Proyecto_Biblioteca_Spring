@@ -31,7 +31,12 @@ public class AdminUserService {
         Role role = roleRepo.findByName(normalized)
                 .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado: " + normalized));
 
+        // Eliminar roles previos para que no se dupliquen
+
+        user.getRoles().clear();
+        // Asignar nuevo rol
         user.getRoles().add(role);
+
         return userRepo.save(user);
     }
 }
