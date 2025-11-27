@@ -52,11 +52,16 @@ public class Usuario {
     private Boolean activo = true;
 
 	@OneToMany(
-			mappedBy = "usuario"
+			mappedBy = "usuario",
+            cascade = CascadeType.REMOVE, orphanRemoval = true
 			)
 	private List<Prestamo> prestamo;
 
-    @OneToOne(mappedBy = "usuario")
+    @OneToOne(
+            mappedBy = "usuario",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private UserAccount userAccount;
 	// Constructores
 

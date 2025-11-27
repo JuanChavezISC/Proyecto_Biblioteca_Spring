@@ -52,11 +52,13 @@ public class PrestamoServiceImpl implements IPrestamoService{
 	public List<PrestamoDto> findAllLoans() {
 		return prestamoRepository.findAll()
 				.stream()
-				.map(pr -> prestamoMapper.toDto(pr))
+				.map(prestamoMapper::toDto)
 				.collect(Collectors.toList());
 	}
 
+    // Guardar Prestamos
 	@Override
+    @Transactional
 	public PrestamoDto saveLoan(PrestamoDto prestamo) {
 
 		Usuario usuarioExistente = usuarioRepository.findById(prestamo.usuarioId())
@@ -64,13 +66,14 @@ public class PrestamoServiceImpl implements IPrestamoService{
 		
 		Libro libroExistente = libroRepository.findById(prestamo.libroId())
 				.orElseThrow(() -> new RuntimeException("libro no encontrado, ingrese un id diferente"));
-		
+
+        // Crear el prestamo sin usuario ni libro
 		Prestamo prestamoEntity = prestamoMapper.toEntity(prestamo);
 		
-		// Asociar usuario y libro
+		// Asignar entidades gestionadas por JPA
 		
 		prestamoEntity.setUsuario(usuarioExistente);
-		prestamoEntity.setLibro(libroExistente);
+        prestamoEntity.setLibro(libroExistente);
 		
 		// Guardar en base de datos
 		
@@ -80,6 +83,7 @@ public class PrestamoServiceImpl implements IPrestamoService{
 	}
 
 	@Override
+    @Transactional
 	public PrestamoDto updateLoan(Long id, PrestamoDto prestamo) {
 		
 		Prestamo prestamoDb = prestamoRepository.findById(id)
@@ -114,6 +118,7 @@ public class PrestamoServiceImpl implements IPrestamoService{
 	}
 
 	@Override
+    @Transactional
 	public void deleteLoan(Long id) {
 		prestamoRepository.deleteById(id);
 	}

@@ -6,6 +6,8 @@ import java.util.List;
 import com.biblioteca.auth.dto.RegistroUsuarioDto;
 import com.biblioteca.dto.UsuarioDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,16 +38,22 @@ public class UsuarioController {
 		this.usuarioService = usuarioService;
 	}
 
+    // ADMIN y LIBRARIAN pueden acceder
+    @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN')")
 	@GetMapping("/usuarios")
 	public ResponseEntity<List<UsuarioDto>> findAllUsers(){
 		return ResponseEntity.ok(usuarioService.findAllUsers());
 	}
-	
+
+    // ADMIN y LIBRARIAN puede crear libros
+    @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN')")
 	@GetMapping("/usuarios/{id}")
 	public ResponseEntity<UsuarioDto> getUserById(@PathVariable @Min(1) Long id) {
 		return ResponseEntity.ok(usuarioService.findUserById(id));
 	}
-	
+
+    // Solo ADMIN puede crear usuarios de forma personalizada
+    @PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/usuarios")
 	public ResponseEntity<UsuarioDto> saveUser(@Valid @RequestBody RegistroUsuarioDto usuario,
 													UriComponentsBuilder uriBuilder) {
@@ -57,14 +65,18 @@ public class UsuarioController {
 				.toUri();
 		return ResponseEntity.created(location).body(creado);
 	}
-	
+
+    // Solo ADMIN puede editar datos de los usuarios
+    @PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/usuarios/{id}") //PathVariable recibe variable en URL
 	public ResponseEntity<UsuarioDto> updateUser(@PathVariable Long id,
 													@Valid @RequestBody UsuarioDto usuario) {
 		UsuarioDto actualizado = usuarioService.updateUser(id, usuario);
 		return ResponseEntity.ok(actualizado);
 	}
-	
+
+    // Solo ADMIN puede eliminar usuarios
+    @PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/usuarios/{id}")
 	public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
 		usuarioService.deleteUser(id);

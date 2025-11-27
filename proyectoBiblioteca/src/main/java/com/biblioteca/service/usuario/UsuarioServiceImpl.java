@@ -70,17 +70,14 @@ public class UsuarioServiceImpl implements IUsuarioService {
 		Usuario guardado = usuarioRepository.save(usuarioEntity);
 
         // 2. Crear UserAccount llamando al servicio de seguridad
-        UserAccount cuenta = userAccountService.register(usuario, guardado);
-
-        // 3. Asociar ambos lados
-        guardado.setUserAccount(cuenta);
-        usuarioRepository.save(guardado);
+        userAccountService.register(usuario, guardado);
 		
 		return usuarioMapper.toDto(guardado);
 	}
 
 	// Actualizar Usuario
 	@Override
+    @Transactional
 	public UsuarioDto updateUser(Long id, UsuarioDto usuario) {
 		
 		Usuario usuarioDb = usuarioRepository.findById(id).get();
@@ -107,6 +104,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
 	}
 
 	@Override
+    @Transactional
 	public void deleteUser(Long id) {
 		usuarioRepository.deleteById(id);
 	}

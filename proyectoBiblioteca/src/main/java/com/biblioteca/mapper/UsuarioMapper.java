@@ -62,9 +62,9 @@ public class UsuarioMapper {
         usuario.setDireccion(dto.direccion());
         usuario.setCiudad(dto.ciudad());
 		
-		if (dto.prestamos() != null) {
-			usuario.setPrestamo(prestamoMapper.toEntityList(dto.prestamos()));
-		}
+//		if (dto.prestamos() != null) {
+//			usuario.setPrestamo(prestamoMapper.toEntityList(dto.prestamos()));
+//		}
 		return usuario;
 	}
 

@@ -41,20 +41,7 @@ public class PrestamoMapper {
 		prestamo.setFechaPrestamo(dto.fechaPrestamo());
 		prestamo.setFechaDevolucion(dto.fechaDevolucion());
 		prestamo.setDevuelto(dto.devuelto());
-		
-		// Relaciones: setear referencias con sus Id's (sin cargar tod o  el objeto)
-		
-		if (dto.libroId() != null) {
-			Libro libro = new Libro();
-			libro.setLibroId(dto.libroId());
-			prestamo.setLibro(libro);
-		}
-		
-		if (dto.usuarioId() != null) {
-			Usuario usuario = new Usuario();
-			usuario.setUsuarioId(dto.usuarioId());
-			prestamo.setUsuario(usuario);
-		}
+
 		return prestamo;
 	}
 	
