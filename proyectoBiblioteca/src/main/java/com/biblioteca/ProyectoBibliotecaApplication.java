@@ -3,6 +3,8 @@ package com.biblioteca;
 import com.biblioteca.security.role.Role;
 import com.biblioteca.security.role.RoleRepository;
 import com.biblioteca.security.user.UserAccountRepository;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,6 +13,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Set;
 
+@SecurityScheme(
+        name = "bearerAuth",
+        type = SecuritySchemeType.HTTP,
+        scheme = "bearer",
+        bearerFormat = "JWT"
+)
 @SpringBootApplication
 public class ProyectoBibliotecaApplication {
 

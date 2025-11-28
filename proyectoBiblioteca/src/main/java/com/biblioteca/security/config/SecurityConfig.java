@@ -4,6 +4,7 @@ import com.biblioteca.security.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -25,7 +26,33 @@ public class SecurityConfig {
                 sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.authorizeHttpRequests(auth -> auth
+                // Swagger: permitir sin token
+
+                .requestMatchers(
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html").permitAll()
+
+                //rutas publicas
                 .requestMatchers("/api/public/**", "/api/auth/**").permitAll()
+                //rutas por rol
+
+                // Requiere rol USER o superior para estas rutas
+                .requestMatchers(HttpMethod.GET, "/api/libros/*", "/api/categorias/", "/api/autores/*")
+                .hasAnyRole("USER", "LIBRARIAN", "ADMIN")
+
+                // Permite a los roles de BIBLIOTECARIO y ADMIN gestionar préstamos y usuarios
+                .requestMatchers(HttpMethod.GET, "/api/prestamos/*", "/api/usuarios/*")
+                .hasAnyRole("LIBRARIAN", "ADMIN")
+
+                // Requiere rol BIBLIOTECARIO para crear, actualizar o eliminar recursos
+                .requestMatchers(HttpMethod.POST, "/api/libros/*", "/api/categorias/", "/api/autores/", "/api/prestamos/", "/api/usuarios/*")
+                .hasRole("LIBRARIAN")
+                .requestMatchers(HttpMethod.PUT, "/api/libros/*", "/api/categorias/", "/api/autores/", "/api/prestamos/", "/api/usuarios/*")
+                .hasRole("LIBRARIAN")
+                .requestMatchers(HttpMethod.DELETE, "/api/libros/*", "/api/categorias/", "/api/autores/", "/api/prestamos/", "/api/usuarios/*")
+                .hasRole("LIBRARIAN")
+
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated()
