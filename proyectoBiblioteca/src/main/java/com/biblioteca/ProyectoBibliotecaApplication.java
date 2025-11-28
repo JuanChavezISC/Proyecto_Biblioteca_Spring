@@ -3,8 +3,14 @@ package com.biblioteca;
 import com.biblioteca.security.role.Role;
 import com.biblioteca.security.role.RoleRepository;
 import com.biblioteca.security.user.UserAccountRepository;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.info.License;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,6 +18,23 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Set;
+
+@OpenAPIDefinition(
+        info = @Info(
+                title = "Microservicio nameMS",
+                version = "1.0.3",
+                description = "APIs Swagger Microservicio nameMS",
+                license = @License(name = "Apache 2.0"),
+                contact = @Contact(name = "MS-nameMS")
+        ),
+        security = { @SecurityRequirement(name = "bearerAuth") },   // <-- CORREGIDO AQUÍ
+        servers = {
+                @Server(description = "ambiente local", url = "http://localhost:8080/"),
+                @Server(description = "url ambiente dev expuesta por Apigateway", url = ""),
+                @Server(description = "url ambiente qa expuesta por Apigateway", url = "https://"),
+                @Server(description = "url ambiente prod expuesta por Apigateway", url = "https:/")
+        }
+)
 
 @SecurityScheme(
         name = "bearerAuth",
