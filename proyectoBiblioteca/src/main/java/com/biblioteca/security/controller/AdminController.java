@@ -1,6 +1,7 @@
 package com.biblioteca.security.controller;
 
 import com.biblioteca.security.service.AdminUserService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,8 @@ public class AdminController {
         );
     }
 
+    @Operation(summary = "Asignar rol a Usuario",
+            description = "Permite al administrador cambiar el rol a algun usuario " )
     @PostMapping("/assign-role")
     @PreAuthorize("hasRole('ADMIN')")
     public Map<String, String> assignRole(@RequestParam String username, @RequestParam String roleName){

@@ -6,6 +6,7 @@ import com.biblioteca.security.dto.RequestsResponses;
 import com.biblioteca.security.service.AuthService;
 import com.biblioteca.security.service.UserAccountService;
 import com.biblioteca.service.usuario.IUsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,8 @@ public class AuthController {
     private final UserAccountService userService;
     private final AuthService authService;
 
+    @Operation(summary = "Registrar Usuario",
+            description = "Permite registrar un nuevo usuario que tendra el rol USER por defecto " )
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegistroUsuarioDto
                                               request) {
@@ -34,6 +37,8 @@ public class AuthController {
         ));
     }
 
+    @Operation(summary = "Iniciar Sesion",
+            description = "Permite iniciari sesion a un usuario y generarle un token JWT" )
     @PostMapping("/login")
     public ResponseEntity<RequestsResponses.AuthResponse> login(@Valid @RequestBody RequestsResponses.LoginRequest req){
         return ResponseEntity.ok(authService.login(req));
