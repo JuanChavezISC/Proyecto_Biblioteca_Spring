@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import com.biblioteca.dto.PrestamoDto;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -39,6 +40,8 @@ public class PrestamoController {
 		this.prestamoService = prestamoService;
 	}
 
+    @Operation(summary = "Visualizar prestamos",
+            description = "Permite visualizar los prestamos a los usuarios permitidos " )
     // Pueden acceder todos los usuarios autenticados
     @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'LIBRARIAN')")
 	@GetMapping("/prestamos")
@@ -46,6 +49,8 @@ public class PrestamoController {
 		return ResponseEntity.ok(prestamoService.findAllLoans());
 	}
 
+    @Operation(summary = "Buscar prestamos por Id",
+            description = "Permite buscar  un prestamo especifico por Id" )
     // Pueden acceder todos los usuarios autenticados
     @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'LIBRARIAN')")
 	@GetMapping("prestamos/{id}")
@@ -53,6 +58,8 @@ public class PrestamoController {
 		return ResponseEntity.ok(prestamoService.findLoanById(id));
 	}
 
+    @Operation(summary = "Guardar Prestamo",
+            description = "Permite guardar un prestamo a los usuarios permitidos " )
     // ADMIN y LIBRARIAN puede crear prestamos
     @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN')")
 	@PostMapping("/prestamos")
@@ -66,6 +73,8 @@ public class PrestamoController {
 		return ResponseEntity.created(location).body(creado);
 	}
 
+    @Operation(summary = "Actualizar Prestamo",
+            description = "Permite actualizar un prestamo a los usuarios permitidos " )
     // ADMIN y LIBRARIAN puede modificar prestamos
     @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN')")
 	@PutMapping("prestamos/{id}")
@@ -77,6 +86,8 @@ public class PrestamoController {
 		return ResponseEntity.ok(actualizado);
 	}
 
+    @Operation(summary = "Eliminar Prestamo",
+            description = "Permite eliminar un prestamo a los usuarios permitidos " )
     // Solo ADMIN
     @PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/prestamos/{id}")
