@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.biblioteca.auth.dto.RegistroUsuarioDto;
 import com.biblioteca.dto.UsuarioDto;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +39,8 @@ public class UsuarioController {
 		this.usuarioService = usuarioService;
 	}
 
+    @Operation(summary = "Visualizar Usuarios",
+            description = "Permite ver los usuarios que se encuentran en base de datos " )
     // ADMIN y LIBRARIAN pueden acceder
     @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN')")
 	@GetMapping("/usuarios")
@@ -45,13 +48,17 @@ public class UsuarioController {
 		return ResponseEntity.ok(usuarioService.findAllUsers());
 	}
 
-    // ADMIN y LIBRARIAN puede crear libros
+    @Operation(summary = "Buscar Usuario por Id",
+            description = "Permite buscar algun usuario especifico por Id" )
+    // ADMIN y LIBRARIAN puede visualizar usuarios
     @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN')")
 	@GetMapping("/usuarios/{id}")
 	public ResponseEntity<UsuarioDto> getUserById(@PathVariable @Min(1) Long id) {
 		return ResponseEntity.ok(usuarioService.findUserById(id));
 	}
 
+    @Operation(summary = "Guardar Usuario",
+            description = "Permite guardar un usuario a los usuarios permitidos " )
     // Solo ADMIN puede crear usuarios de forma personalizada
     @PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/usuarios")
@@ -66,6 +73,8 @@ public class UsuarioController {
 		return ResponseEntity.created(location).body(creado);
 	}
 
+    @Operation(summary = "Actualizar Usuario",
+            description = "Permite actualizar un usuario a los usuarios permitidos" )
     // Solo ADMIN puede editar datos de los usuarios
     @PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/usuarios/{id}") //PathVariable recibe variable en URL
@@ -75,6 +84,8 @@ public class UsuarioController {
 		return ResponseEntity.ok(actualizado);
 	}
 
+    @Operation(summary = "Eliminar Usuario",
+            description = "Permite eliminar un usuario a los usuarios permitidos " )
     // Solo ADMIN puede eliminar usuarios
     @PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/usuarios/{id}")
