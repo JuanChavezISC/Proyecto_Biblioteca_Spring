@@ -5,6 +5,7 @@ import java.util.List;
 
 
 import com.biblioteca.dto.AutorDto;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -38,6 +39,8 @@ public class AutorController {
 		this.autorService = autorService;
 	}
 
+    @Operation(summary = "Visualizar Autores",
+            description = "Permite visualizar todos los autores que se encuentren en base de datos " )
     // Pueden acceder todos los usuarios autenticados
     @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'LIBRARIAN')")
 	@GetMapping("/autores")
@@ -45,6 +48,8 @@ public class AutorController {
 		return ResponseEntity.ok(autorService.findAllAutors());		
 	}
 
+    @Operation(summary = "Buscar Autor por Id",
+            description = "Permite buscar algun autor especifico empleando su Id")
     // Pueden acceder todos los usuarios autenticados
     @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'LIBRARIAN')")
 	@GetMapping("/autores/{id}")
@@ -52,6 +57,8 @@ public class AutorController {
 		return ResponseEntity.ok(autorService.getAutorById(id));
 	}
 
+    @Operation(summary = "Guardar Autor",
+            description = "Permite guardar autores a los usuarios permitidos" )
 	// ADMIN y LIBRARIAN puede crear autores
     @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN')")
 	@PostMapping("/autores")
@@ -65,6 +72,8 @@ public class AutorController {
 		return ResponseEntity.created(location).body(creado);
 	}
 
+    @Operation(summary = "Actualizar Autor",
+            description = "Permite actualizar autores a los usuarios permitidos" )
 	// ADMIN y LIBRARIAN puede actualizar autores
     @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN')")
 	@PutMapping("/autores/{id}")
@@ -74,6 +83,8 @@ public class AutorController {
 		return ResponseEntity.ok(actualizado);
 	}
 
+    @Operation(summary = "Eliminar Autor",
+            description = "Permite eliminar autores a los usuarios permitidos" )
     // Solo ADMIN
     @PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/autores/{id}")
