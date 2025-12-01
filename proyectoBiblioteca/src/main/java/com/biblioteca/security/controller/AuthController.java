@@ -7,6 +7,7 @@ import com.biblioteca.security.service.AuthService;
 import com.biblioteca.security.service.UserAccountService;
 import com.biblioteca.service.usuario.IUsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+@Tag(name = "Modulo Autorizacion")
 @RestController
 @RequestMapping("/api/auth") @RequiredArgsConstructor
 public class AuthController {

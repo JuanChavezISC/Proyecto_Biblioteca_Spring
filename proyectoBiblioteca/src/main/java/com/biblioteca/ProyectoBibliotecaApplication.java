@@ -26,7 +26,8 @@ import java.util.Set;
                 @Tag(name = "Modulo Categoria", description = "Operaciones con data de categorias"),
                 @Tag(name = "Modulo Libro", description = "Operaciones con data de libros"),
                 @Tag(name = "Modulo Prestamo", description = "Operaciones con data de prestamos"),
-                @Tag(name = "Modulo Usuario", description = "Operaciones con data de usuarios")
+                @Tag(name = "Modulo Usuario", description = "Operaciones con data de usuarios"),
+                @Tag(name = "Modulo Autorizacion", description = "Operaciones autorizacion para el sistema")
         },
         info = @Info(
                 title = "Proyecto Biblioteca",
