@@ -21,9 +21,9 @@ import java.util.Set;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "Microservicio nameMS",
+                title = "Proyecto Biblioteca",
                 version = "1.0.3",
-                description = "APIs Swagger Microservicio nameMS",
+                description = "APIs Swagger de Proyecto Biblioteca",
                 license = @License(name = "Apache 2.0"),
                 contact = @Contact(name = "MS-nameMS")
         ),
