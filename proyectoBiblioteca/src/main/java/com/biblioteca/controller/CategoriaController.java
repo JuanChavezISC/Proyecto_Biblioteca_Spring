@@ -5,6 +5,7 @@ import java.util.List;
 
 
 import com.biblioteca.dto.CategoriaDto;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -37,6 +38,8 @@ public class CategoriaController {
 		this.categoriaService = categoriaService;
 	}
 
+    @Operation(summary = "Visualizar Categorias",
+            description = "Permite visualizar todas las categorias que se encuentren en base de datos " )
     // Pueden acceder todos los usuarios autenticados
     @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'LIBRARIAN')")
 	@GetMapping("/categorias")
@@ -44,6 +47,8 @@ public class CategoriaController {
 		return ResponseEntity.ok(categoriaService.findAllCategories());
 	}
 
+    @Operation(summary = "Visualizar Categoria por Id",
+            description = "Permite buscar una categoria especifica por Id " )
     // Pueden acceder todos los usuarios autenticados
     @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'LIBRARIAN')")
 	@GetMapping("/categorias/{id}")
@@ -51,6 +56,8 @@ public class CategoriaController {
 		return ResponseEntity.ok(categoriaService.findCategoriaById(id));
 	}
 
+    @Operation(summary = "Guardar Categoria",
+            description = "Permite guardar categorias a los Usuarios permitidos " )
     // ADMIN y LIBRARIAN puede crear categorias
     @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN')")
 	@PostMapping("/categorias")
@@ -63,6 +70,9 @@ public class CategoriaController {
 				.toUri();
 		return ResponseEntity.created(location).body(creado);
 	}
+
+    @Operation(summary = "Actualizar Categoria",
+            description = "Permite actualizar categorias a los Usuarios permitidos " )
     // ADMIN y LIBRARIAN puede actualizar categorias
     @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN')")
 	@PutMapping("/categorias/{id}")
@@ -72,6 +82,8 @@ public class CategoriaController {
 		return ResponseEntity.ok(actualizado);
 	}
 
+    @Operation(summary = "Eliminar Categoria",
+            description = "Permite eliminar categorias a los Usuarios permitidos " )
     // Solo ADMIN
     @PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/categorias/{id}")
