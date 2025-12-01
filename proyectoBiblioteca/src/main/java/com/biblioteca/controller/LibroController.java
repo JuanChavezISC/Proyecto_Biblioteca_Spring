@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import com.biblioteca.dto.LibroDto;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,6 +39,8 @@ public class LibroController {
 		this.libroService = libroService;
 	}
 
+    @Operation(summary = "Visualizar libros",
+            description = "Permite visualizar los libros que se encuentren en base de datos " )
     // Pueden acceder todos los usuarios autenticados
     @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'LIBRARIAN')")
 	@GetMapping("/libros")
@@ -46,6 +49,8 @@ public class LibroController {
 		return ResponseEntity.ok(libroService.findAllBooks());
 	}
 
+    @Operation(summary = "Buscar libro por Id",
+            description = "Permite buscar un libro especifico por Id " )
     // Pueden acceder todos los usuarios autenticados
     @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'LIBRARIAN')")
 	@GetMapping("/libros/{id}")
@@ -53,6 +58,8 @@ public class LibroController {
 		return ResponseEntity.ok(libroService.findBookById(id));
 	}
 
+    @Operation(summary = "Guardar Libro",
+            description = "Permite guardar libros a los Usuarios permitidos " )
     // ADMIN y LIBRARIAN puede crear libros
     @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN')")
 	@PostMapping("/libros")
@@ -66,6 +73,8 @@ public class LibroController {
 		return ResponseEntity.created(location).body(creado);
 	}
 
+    @Operation(summary = "Actualizar Libro",
+            description = "Permite actualizar libros a los Usuarios permitidos " )
     // ADMIN y LIBRARIAN puede actualizar libros
     @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN')")
 	@PutMapping("/libros/{id}")
@@ -76,6 +85,8 @@ public class LibroController {
 		return ResponseEntity.ok(actualizado);
 	}
 
+    @Operation(summary = "Eliminar libro",
+            description = "Permite eliminar libros a los Usuarios permitidos " )
     // Solo ADMIN
     @PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/libros/{id}")
