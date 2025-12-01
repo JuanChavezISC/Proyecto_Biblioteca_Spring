@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.info.License;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,6 +21,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Set;
 
 @OpenAPIDefinition(
+        tags = {
+                @Tag(name = "Modulo Autor", description = "Operaciones con data de autores"),
+                @Tag(name = "Modulo Categoria", description = "Operaciones con data de categorias"),
+                @Tag(name = "Modulo Libro", description = "Operaciones con data de libros"),
+                @Tag(name = "Modulo Prestamo", description = "Operaciones con data de prestamos"),
+                @Tag(name = "Modulo Usuario", description = "Operaciones con data de usuarios")
+        },
         info = @Info(
                 title = "Proyecto Biblioteca",
                 version = "1.0.3",
@@ -42,6 +50,7 @@ import java.util.Set;
         scheme = "bearer",
         bearerFormat = "JWT"
 )
+
 @SpringBootApplication
 public class ProyectoBibliotecaApplication {
 

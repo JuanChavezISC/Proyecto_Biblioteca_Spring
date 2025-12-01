@@ -6,6 +6,7 @@ import java.util.List;
 import com.biblioteca.auth.dto.RegistroUsuarioDto;
 import com.biblioteca.dto.UsuarioDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,7 @@ import com.biblioteca.service.usuario.IUsuarioService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 
+@Tag(name = "Modulo Usuario")
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins= {"http://localhost:4200"})

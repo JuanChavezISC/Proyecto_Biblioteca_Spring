@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.biblioteca.dto.LibroDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,6 +27,7 @@ import com.biblioteca.service.libro.ILibroService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 
+@Tag(name = "Modulo Libro")
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins= {"http://localhost:4200"})

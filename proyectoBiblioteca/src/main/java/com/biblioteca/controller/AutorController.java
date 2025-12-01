@@ -26,6 +26,7 @@ import com.biblioteca.service.autor.IAutorService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 
+@Tag(name = "Modulo Autor")
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins= {"http://localhost:4200"})

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.biblioteca.dto.PrestamoDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 
-
+@Tag(name = "Modulo Prestamo")
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins= {"http://localhost:4200"})
