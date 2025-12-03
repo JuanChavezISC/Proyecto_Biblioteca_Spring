@@ -42,7 +42,7 @@ public class AutorController {
 	}
 
     @Operation(summary = "Visualizar Autores",
-            description = "Permite visualizar todos los autores que se encuentren en base de datos " )
+            description = "Permite visualizar todos los autores que se encuentren en base de datos. " )
     // Pueden acceder todos los usuarios autenticados
     @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'LIBRARIAN')")
 	@GetMapping("/autores")
