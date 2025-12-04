@@ -41,7 +41,7 @@ public class CategoriaController {
 	}
 
     @Operation(summary = "Visualizar Categorias",
-            description = "Permite visualizar todas las categorias que se encuentren en base de datos " )
+            description = "Permite visualizar todas las categorias que se encuentren en base de datos. " )
     // Pueden acceder todos los usuarios autenticados
     @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'LIBRARIAN')")
 	@GetMapping("/categorias")
