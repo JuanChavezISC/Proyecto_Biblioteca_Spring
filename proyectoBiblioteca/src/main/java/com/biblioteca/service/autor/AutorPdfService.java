@@ -5,7 +5,6 @@ import com.lowagie.text.*;
 import com.lowagie.text.Font;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfTable;
 import com.lowagie.text.pdf.PdfWriter;
 import org.springframework.stereotype.Service;
 
@@ -75,7 +74,7 @@ public class AutorPdfService {
     }
 
     private void agregarCeldaEncabezado(PdfPTable table, String texto){
-        Font headerFont = new Font(Font.HELVETICA, 12, java.awt.Font.BOLD);
+        Font headerFont = new Font(Font.HELVETICA, 12, Font.BOLD);
         PdfPCell cell = new PdfPCell(new Phrase(texto, headerFont));
         cell.setBackgroundColor(Color.LIGHT_GRAY);
         cell.setPadding(5);

@@ -5,6 +5,7 @@ import java.util.List;
 
 
 import com.biblioteca.dto.AutorDto;
+import com.biblioteca.service.autor.AutorPdfService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -35,11 +36,27 @@ public class AutorController {
 
 	
 	private final IAutorService autorService;
+    private final AutorPdfService autorPdfService;
 	
-	public AutorController(IAutorService autorService) {
+	public AutorController(IAutorService autorService, AutorPdfService autorPdfService) {
 		super();
 		this.autorService = autorService;
-	}
+        this.autorPdfService = autorPdfService;
+    }
+
+    @GetMapping("/autores/reporte")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'LIBRARIAN')")
+    public ResponseEntity<byte[]> reporteAutores() throws Exception{
+
+        List<AutorDto> autores = autorService.findAllAutors();
+
+        byte[] pdf = autorPdfService.generarReporteAutores(autores);
+
+        return ResponseEntity.ok()
+                .header("Content-Disposition", "attachment; filename=reporte-autores.pdf")
+                .header("Content-Type", "application/pdf")
+                .body(pdf);
+    }
 
     @Operation(summary = "Visualizar Autores",
             description = "Permite visualizar todos los autores que se encuentren en base de datos. " )
