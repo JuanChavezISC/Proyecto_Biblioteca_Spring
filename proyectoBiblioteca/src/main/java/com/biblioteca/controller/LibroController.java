@@ -42,7 +42,7 @@ public class LibroController {
 	}
 
     @Operation(summary = "Visualizar libros",
-            description = "Permite visualizar los libros que se encuentren en base de datos " )
+            description = "Permite visualizar los libros que se encuentren en base de datos. " )
     // Pueden acceder todos los usuarios autenticados
     @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'LIBRARIAN')")
 	@GetMapping("/libros")
