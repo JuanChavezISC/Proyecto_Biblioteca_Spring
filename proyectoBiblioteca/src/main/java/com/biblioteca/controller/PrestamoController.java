@@ -42,7 +42,7 @@ public class PrestamoController {
 	}
 
     @Operation(summary = "Visualizar prestamos",
-            description = "Permite visualizar los prestamos a los usuarios permitidos " )
+            description = "Permite visualizar los prestamos a los usuarios permitidos. " )
     // Pueden acceder todos los usuarios autenticados
     @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'LIBRARIAN')")
 	@GetMapping("/prestamos")
