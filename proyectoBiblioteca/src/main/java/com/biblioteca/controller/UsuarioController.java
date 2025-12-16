@@ -42,7 +42,7 @@ public class UsuarioController {
 	}
 
     @Operation(summary = "Visualizar Usuarios",
-            description = "Permite ver los usuarios que se encuentran en base de datos " )
+            description = "Permite ver los usuarios que se encuentran en base de datos. " )
     // ADMIN y LIBRARIAN pueden acceder
     @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN')")
 	@GetMapping("/usuarios")
