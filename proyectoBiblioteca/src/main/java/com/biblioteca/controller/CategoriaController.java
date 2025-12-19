@@ -50,7 +50,7 @@ public class CategoriaController {
 	}
 
     @Operation(summary = "Visualizar Categoria por Id",
-            description = "Permite buscar una categoria especifica por Id " )
+            description = "Permite buscar una categoria especifica por Id. " )
     // Pueden acceder todos los usuarios autenticados
     @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'LIBRARIAN')")
 	@GetMapping("/categorias/{id}")
