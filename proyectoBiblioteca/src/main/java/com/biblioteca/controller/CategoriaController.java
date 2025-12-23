@@ -59,7 +59,7 @@ public class CategoriaController {
 	}
 
     @Operation(summary = "Guardar Categoria",
-            description = "Permite guardar categorias a los Usuarios permitidos " )
+            description = "Permite guardar categorias a los Usuarios permitidos. " )
     // ADMIN y LIBRARIAN puede crear categorias
     @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN')")
 	@PostMapping("/categorias")
